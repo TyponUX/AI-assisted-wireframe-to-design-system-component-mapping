@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mapping-rule.schema.json",
+  "title": "Semantic To Client Mapping Rule",
+  "type": "object",
+  "required": [
+    "source_semantic_id",
+    "target_component",
+    "slot_map",
+    "state_map",
+    "fallback"
+  ],
+  "properties": {
+    "source_semantic_id": {
+      "type": "string",
+      "pattern": "^[a-z]+(\\.[a-z0-9_]+)+$"
+    },
+    "target_component": {
+      "type": "string"
+    },
+    "variant_map": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "slot_map": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "state_map": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "fallback": {
+      "type": "string"
+    },
+    "conditions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "additionalProperties": false
+}

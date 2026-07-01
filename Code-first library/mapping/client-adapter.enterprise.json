@@ -1,0 +1,1623 @@
+{
+  "$schema": "./adapter-contract.schema.json",
+  "client_id": "client-enterprise",
+  "design_system": "Enterprise Core DS",
+  "version": "0.1.0",
+  "rules": [
+    {
+      "source_semantic_id": "layout.page_shell",
+      "target": {
+        "component": "Shell",
+        "import": "@enterprise/core/layout"
+      },
+      "slot_map": {
+        "header": {
+          "to": "header",
+          "transform": "node_passthrough"
+        },
+        "body": {
+          "to": "body",
+          "transform": "node_passthrough"
+        },
+        "footer": {
+          "to": "footer",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default",
+          "props": {
+            "layoutMode": "standard"
+          }
+        }
+      },
+      "fallback": {
+        "component": "Box",
+        "reason": "Shell unavailable"
+      },
+      "fallback_chain": [
+        "Box",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for layout.page_shell"
+    },
+    {
+      "source_semantic_id": "layout.section",
+      "target": {
+        "component": "Section",
+        "import": "@enterprise/core/layout"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "body": {
+          "to": "children",
+          "transform": "node_passthrough"
+        },
+        "actions": {
+          "to": "actions",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "expanded"
+        },
+        "collapsed": {
+          "target_state": "collapsed"
+        }
+      },
+      "fallback": {
+        "component": "Group",
+        "reason": "Section unavailable"
+      },
+      "fallback_chain": [
+        "Group",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for layout.section"
+    },
+    {
+      "source_semantic_id": "navigation.top_nav",
+      "target": {
+        "component": "TopNavigation",
+        "import": "@enterprise/core/navigation"
+      },
+      "slot_map": {
+        "brand": {
+          "to": "brandLabel",
+          "transform": "direct"
+        },
+        "items": {
+          "to": "items",
+          "transform": "list_passthrough"
+        },
+        "actions": {
+          "to": "actions",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "NavBar",
+        "reason": "TopNavigation unavailable"
+      },
+      "fallback_chain": [
+        "NavBar",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for navigation.top_nav"
+    },
+    {
+      "source_semantic_id": "navigation.side_nav",
+      "target": {
+        "component": "SideNavigation",
+        "import": "@enterprise/core/navigation"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "list_passthrough"
+        },
+        "active_item": {
+          "to": "activeItem",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "expanded"
+        },
+        "collapsed": {
+          "target_state": "collapsed"
+        }
+      },
+      "fallback": {
+        "component": "NavRail",
+        "reason": "SideNavigation unavailable"
+      },
+      "fallback_chain": [
+        "NavRail",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for navigation.side_nav"
+    },
+    {
+      "source_semantic_id": "navigation.tabs",
+      "target": {
+        "component": "Tabs",
+        "import": "@enterprise/core/navigation"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "list_passthrough"
+        },
+        "active_item": {
+          "to": "activeItem",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "SegmentedControl",
+        "reason": "Tabs unavailable"
+      },
+      "fallback_chain": [
+        "SegmentedControl",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for navigation.tabs"
+    },
+    {
+      "source_semantic_id": "navigation.breadcrumb",
+      "target": {
+        "component": "Breadcrumb",
+        "import": "@enterprise/core/navigation"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "PathNav",
+        "reason": "Breadcrumb unavailable"
+      },
+      "fallback_chain": [
+        "PathNav",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for navigation.breadcrumb"
+    },
+    {
+      "source_semantic_id": "navigation.pagination",
+      "target": {
+        "component": "Pagination",
+        "import": "@enterprise/core/navigation"
+      },
+      "slot_map": {
+        "current_page": {
+          "to": "currentPage",
+          "transform": "meta_passthrough"
+        },
+        "total_pages": {
+          "to": "totalPages",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Pager",
+        "reason": "Pagination unavailable"
+      },
+      "fallback_chain": [
+        "Pager",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for navigation.pagination"
+    },
+    {
+      "source_semantic_id": "input.text_field",
+      "target": {
+        "component": "TextInput",
+        "import": "@enterprise/core/form"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "direct"
+        },
+        "helper_text": {
+          "to": "helperText",
+          "transform": "direct"
+        },
+        "error_text": {
+          "to": "errorMessage",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled",
+          "props": {
+            "disabled": false
+          }
+        },
+        "focused": {
+          "target_state": "focused",
+          "props": {
+            "autoFocus": true
+          }
+        },
+        "error": {
+          "target_state": "invalid",
+          "props": {
+            "invalid": true
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Input",
+        "reason": "TextInput unavailable"
+      },
+      "fallback_chain": [
+        "Input",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for input.text_field"
+    },
+    {
+      "source_semantic_id": "input.select",
+      "target": {
+        "component": "SelectInput",
+        "import": "@enterprise/core/form"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "options": {
+          "to": "options",
+          "transform": "list_passthrough"
+        },
+        "helper_text": {
+          "to": "helperText",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled"
+        },
+        "open": {
+          "target_state": "expanded",
+          "props": {
+            "open": true
+          }
+        },
+        "error": {
+          "target_state": "invalid",
+          "props": {
+            "invalid": true
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Select",
+        "reason": "SelectInput unavailable"
+      },
+      "fallback_chain": [
+        "Select",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for input.select"
+    },
+    {
+      "source_semantic_id": "input.text_area",
+      "target": {
+        "component": "TextArea",
+        "import": "@enterprise/core/form"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "direct"
+        },
+        "helper_text": {
+          "to": "helperText",
+          "transform": "direct"
+        },
+        "error_text": {
+          "to": "errorMessage",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled"
+        },
+        "focused": {
+          "target_state": "focused",
+          "props": {
+            "autoFocus": true
+          }
+        },
+        "error": {
+          "target_state": "invalid",
+          "props": {
+            "invalid": true
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "MultilineInput",
+        "reason": "TextArea unavailable"
+      },
+      "fallback_chain": [
+        "MultilineInput",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for input.text_area"
+    },
+    {
+      "source_semantic_id": "input.radio_group",
+      "target": {
+        "component": "RadioGroup",
+        "import": "@enterprise/core/form"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "options": {
+          "to": "options",
+          "transform": "list_passthrough"
+        },
+        "helper_text": {
+          "to": "helperText",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled"
+        },
+        "error": {
+          "target_state": "invalid",
+          "props": {
+            "invalid": true
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "ChoiceGroup",
+        "reason": "RadioGroup unavailable"
+      },
+      "fallback_chain": [
+        "ChoiceGroup",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for input.radio_group"
+    },
+    {
+      "source_semantic_id": "input.toggle_switch",
+      "target": {
+        "component": "Switch",
+        "import": "@enterprise/core/form"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "off": {
+          "target_state": "off",
+          "props": {
+            "checked": false
+          }
+        },
+        "on": {
+          "target_state": "on",
+          "props": {
+            "checked": true
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Toggle",
+        "reason": "Switch unavailable"
+      },
+      "fallback_chain": [
+        "Toggle",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for input.toggle_switch"
+    },
+    {
+      "source_semantic_id": "input.search_field",
+      "target": {
+        "component": "SearchInput",
+        "import": "@enterprise/core/form"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "direct"
+        },
+        "helper_text": {
+          "to": "placeholder",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled"
+        },
+        "focused": {
+          "target_state": "focused",
+          "props": {
+            "autoFocus": true
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Input",
+        "reason": "SearchInput unavailable"
+      },
+      "fallback_chain": [
+        "Input",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for input.search_field"
+    },
+    {
+      "source_semantic_id": "input.date_input",
+      "target": {
+        "component": "DateInput",
+        "import": "@enterprise/core/form"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "direct"
+        },
+        "helper_text": {
+          "to": "helperText",
+          "transform": "direct"
+        },
+        "error_text": {
+          "to": "errorMessage",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled"
+        },
+        "focused": {
+          "target_state": "focused",
+          "props": {
+            "autoFocus": true
+          }
+        },
+        "error": {
+          "target_state": "invalid",
+          "props": {
+            "invalid": true
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Input",
+        "reason": "DateInput unavailable"
+      },
+      "fallback_chain": [
+        "Input",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for input.date_input"
+    },
+    {
+      "source_semantic_id": "input.file_input",
+      "target": {
+        "component": "FileUpload",
+        "import": "@enterprise/core/form"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "helper_text": {
+          "to": "helperText",
+          "transform": "direct"
+        },
+        "file_name": {
+          "to": "fileName",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "idle"
+        },
+        "selected": {
+          "target_state": "selected"
+        },
+        "error": {
+          "target_state": "error",
+          "props": {
+            "invalid": true
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Input",
+        "reason": "FileUpload unavailable"
+      },
+      "fallback_chain": [
+        "Input",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for input.file_input"
+    },
+    {
+      "source_semantic_id": "input.checkbox",
+      "target": {
+        "component": "Checkbox",
+        "import": "@enterprise/core/form"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "helper_text": {
+          "to": "description",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "unchecked": {
+          "target_state": "unchecked",
+          "props": {
+            "checked": false
+          }
+        },
+        "checked": {
+          "target_state": "checked",
+          "props": {
+            "checked": true
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Toggle",
+        "reason": "Checkbox unavailable"
+      },
+      "fallback_chain": [
+        "Toggle",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for input.checkbox"
+    },
+    {
+      "source_semantic_id": "action.button_primary",
+      "target": {
+        "component": "Button",
+        "import": "@enterprise/core/actions"
+      },
+      "slot_map": {
+        "label": {
+          "to": "children",
+          "transform": "text_to_children"
+        },
+        "icon": {
+          "to": "startIcon",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled",
+          "props": {
+            "intent": "primary"
+          }
+        },
+        "loading": {
+          "target_state": "loading",
+          "props": {
+            "intent": "primary",
+            "loading": true
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "intent": "primary",
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "ButtonBase",
+        "reason": "Primary button unavailable"
+      },
+      "fallback_chain": [
+        "ButtonBase",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for action.button_primary"
+    },
+    {
+      "source_semantic_id": "action.button_secondary",
+      "target": {
+        "component": "Button",
+        "import": "@enterprise/core/actions"
+      },
+      "slot_map": {
+        "label": {
+          "to": "children",
+          "transform": "text_to_children"
+        },
+        "icon": {
+          "to": "startIcon",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled",
+          "props": {
+            "intent": "secondary"
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "intent": "secondary",
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "ButtonBase",
+        "reason": "Secondary button unavailable"
+      },
+      "fallback_chain": [
+        "ButtonBase",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for action.button_secondary"
+    },
+    {
+      "source_semantic_id": "action.icon_button",
+      "target": {
+        "component": "IconButton",
+        "import": "@enterprise/core/actions"
+      },
+      "slot_map": {
+        "label": {
+          "to": "ariaLabel",
+          "transform": "direct"
+        },
+        "icon": {
+          "to": "icon",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled"
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Button",
+        "reason": "IconButton unavailable"
+      },
+      "fallback_chain": [
+        "Button",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for action.icon_button"
+    },
+    {
+      "source_semantic_id": "data.card",
+      "target": {
+        "component": "Card",
+        "import": "@enterprise/core/data"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "body": {
+          "to": "body",
+          "transform": "direct"
+        },
+        "meta": {
+          "to": "meta",
+          "transform": "meta_passthrough"
+        },
+        "actions": {
+          "to": "actions",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "content"
+        },
+        "loading": {
+          "target_state": "skeleton",
+          "props": {
+            "loading": true
+          }
+        },
+        "empty": {
+          "target_state": "empty"
+        }
+      },
+      "fallback": {
+        "component": "Panel",
+        "reason": "Card unavailable"
+      },
+      "fallback_chain": [
+        "Panel",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for data.card"
+    },
+    {
+      "source_semantic_id": "data.table",
+      "target": {
+        "component": "DataTable",
+        "import": "@enterprise/core/data"
+      },
+      "slot_map": {
+        "columns": {
+          "to": "columns",
+          "transform": "list_passthrough"
+        },
+        "rows": {
+          "to": "rows",
+          "transform": "list_passthrough"
+        },
+        "actions": {
+          "to": "actions",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "loaded"
+        },
+        "loading": {
+          "target_state": "loading",
+          "props": {
+            "loading": true
+          }
+        },
+        "empty": {
+          "target_state": "empty"
+        },
+        "error": {
+          "target_state": "error",
+          "props": {
+            "showError": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Table",
+        "reason": "DataTable unavailable"
+      },
+      "fallback_chain": [
+        "Table",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for data.table"
+    },
+    {
+      "source_semantic_id": "data.list",
+      "target": {
+        "component": "List",
+        "import": "@enterprise/core/data"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "loaded"
+        },
+        "loading": {
+          "target_state": "loading",
+          "props": {
+            "loading": true
+          }
+        },
+        "empty": {
+          "target_state": "empty"
+        },
+        "error": {
+          "target_state": "error",
+          "props": {
+            "showError": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "ItemList",
+        "reason": "List unavailable"
+      },
+      "fallback_chain": [
+        "ItemList",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for data.list"
+    },
+    {
+      "source_semantic_id": "data.badge",
+      "target": {
+        "component": "Badge",
+        "import": "@enterprise/core/data"
+      },
+      "slot_map": {
+        "label": {
+          "to": "children",
+          "transform": "text_to_children"
+        }
+      },
+      "state_map": {
+        "neutral": {
+          "target_state": "neutral"
+        },
+        "success": {
+          "target_state": "success"
+        },
+        "warning": {
+          "target_state": "warning"
+        },
+        "error": {
+          "target_state": "error"
+        }
+      },
+      "fallback": {
+        "component": "Tag",
+        "reason": "Badge unavailable"
+      },
+      "fallback_chain": [
+        "Tag",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for data.badge"
+    },
+    {
+      "source_semantic_id": "data.key_value_list",
+      "target": {
+        "component": "KeyValueList",
+        "import": "@enterprise/core/data"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "empty": {
+          "target_state": "empty"
+        }
+      },
+      "fallback": {
+        "component": "DescriptionList",
+        "reason": "KeyValueList unavailable"
+      },
+      "fallback_chain": [
+        "DescriptionList",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for data.key_value_list"
+    },
+    {
+      "source_semantic_id": "feedback.alert",
+      "target": {
+        "component": "Alert",
+        "import": "@enterprise/core/feedback"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "message": {
+          "to": "message",
+          "transform": "direct"
+        },
+        "actions": {
+          "to": "actions",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "info": {
+          "target_state": "info"
+        },
+        "success": {
+          "target_state": "success"
+        },
+        "warning": {
+          "target_state": "warning"
+        },
+        "error": {
+          "target_state": "error"
+        }
+      },
+      "fallback": {
+        "component": "Banner",
+        "reason": "Alert unavailable"
+      },
+      "fallback_chain": [
+        "Banner",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for feedback.alert"
+    },
+    {
+      "source_semantic_id": "feedback.empty_state",
+      "target": {
+        "component": "EmptyState",
+        "import": "@enterprise/core/feedback"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "message": {
+          "to": "message",
+          "transform": "direct"
+        },
+        "action": {
+          "to": "action",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Hint",
+        "reason": "EmptyState unavailable"
+      },
+      "fallback_chain": [
+        "Hint",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for feedback.empty_state"
+    },
+    {
+      "source_semantic_id": "feedback.inline_error",
+      "target": {
+        "component": "FieldError",
+        "import": "@enterprise/core/feedback"
+      },
+      "slot_map": {
+        "message": {
+          "to": "message",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Text",
+        "reason": "FieldError unavailable"
+      },
+      "fallback_chain": [
+        "Text",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for feedback.inline_error"
+    },
+    {
+      "source_semantic_id": "feedback.loading_indicator",
+      "target": {
+        "component": "LoadingIndicator",
+        "import": "@enterprise/core/feedback"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Spinner",
+        "reason": "LoadingIndicator unavailable"
+      },
+      "fallback_chain": [
+        "Spinner",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for feedback.loading_indicator"
+    },
+    {
+      "source_semantic_id": "feedback.progress_bar",
+      "target": {
+        "component": "ProgressBar",
+        "import": "@enterprise/core/feedback"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "indeterminate": {
+          "target_state": "indeterminate"
+        },
+        "complete": {
+          "target_state": "complete",
+          "props": {
+            "value": 100
+          }
+        }
+      },
+      "fallback": {
+        "component": "Spinner",
+        "reason": "ProgressBar unavailable"
+      },
+      "fallback_chain": [
+        "Spinner",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for feedback.progress_bar"
+    },
+    {
+      "source_semantic_id": "overlay.modal",
+      "target": {
+        "component": "Modal",
+        "import": "@enterprise/core/overlay"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "body": {
+          "to": "children",
+          "transform": "node_passthrough"
+        },
+        "actions": {
+          "to": "actions",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "open": {
+          "target_state": "open",
+          "props": {
+            "open": true
+          }
+        },
+        "closed": {
+          "target_state": "closed",
+          "props": {
+            "open": false
+          }
+        }
+      },
+      "fallback": {
+        "component": "Dialog",
+        "reason": "Modal unavailable"
+      },
+      "fallback_chain": [
+        "Dialog",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for overlay.modal"
+    },
+    {
+      "source_semantic_id": "overlay.tooltip",
+      "target": {
+        "component": "Tooltip",
+        "import": "@enterprise/core/overlay"
+      },
+      "slot_map": {
+        "message": {
+          "to": "content",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "hidden": {
+          "target_state": "closed",
+          "props": {
+            "open": false
+          }
+        },
+        "visible": {
+          "target_state": "open",
+          "props": {
+            "open": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Hint",
+        "reason": "Tooltip unavailable"
+      },
+      "fallback_chain": [
+        "Hint",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for overlay.tooltip"
+    },
+    {
+      "source_semantic_id": "overlay.popover",
+      "target": {
+        "component": "Popover",
+        "import": "@enterprise/core/overlay"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "body": {
+          "to": "children",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "open": {
+          "target_state": "open",
+          "props": {
+            "open": true
+          }
+        },
+        "closed": {
+          "target_state": "closed",
+          "props": {
+            "open": false
+          }
+        }
+      },
+      "fallback": {
+        "component": "FloatingPanel",
+        "reason": "Popover unavailable"
+      },
+      "fallback_chain": [
+        "FloatingPanel",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for overlay.popover"
+    },
+    {
+      "source_semantic_id": "overlay.drawer",
+      "target": {
+        "component": "Drawer",
+        "import": "@enterprise/core/overlay"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "body": {
+          "to": "children",
+          "transform": "node_passthrough"
+        },
+        "actions": {
+          "to": "actions",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "open": {
+          "target_state": "open",
+          "props": {
+            "open": true
+          }
+        },
+        "closed": {
+          "target_state": "closed",
+          "props": {
+            "open": false
+          }
+        }
+      },
+      "fallback": {
+        "component": "SidePanel",
+        "reason": "Drawer unavailable"
+      },
+      "fallback_chain": [
+        "SidePanel",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for overlay.drawer"
+    },
+    {
+      "source_semantic_id": "flow.stepper",
+      "target": {
+        "component": "Stepper",
+        "import": "@enterprise/core/flow"
+      },
+      "slot_map": {
+        "steps": {
+          "to": "steps",
+          "transform": "list_passthrough"
+        },
+        "active_step": {
+          "to": "activeStep",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "ProgressSteps",
+        "reason": "Stepper unavailable"
+      },
+      "fallback_chain": [
+        "ProgressSteps",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for flow.stepper"
+    },
+    {
+      "source_semantic_id": "layout.stack",
+      "target": {
+        "component": "Stack",
+        "import": "@enterprise/core/layout"
+      },
+      "slot_map": {
+        "items": {
+          "to": "children",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "compact": {
+          "target_state": "compact"
+        }
+      },
+      "fallback": {
+        "component": "Group",
+        "reason": "Stack unavailable"
+      },
+      "fallback_chain": [
+        "Group",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for layout.stack"
+    },
+    {
+      "source_semantic_id": "layout.inline",
+      "target": {
+        "component": "Inline",
+        "import": "@enterprise/core/layout"
+      },
+      "slot_map": {
+        "items": {
+          "to": "children",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "wrap": {
+          "target_state": "wrap"
+        }
+      },
+      "fallback": {
+        "component": "Row",
+        "reason": "Inline unavailable"
+      },
+      "fallback_chain": [
+        "Row",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for layout.inline"
+    },
+    {
+      "source_semantic_id": "action.menu_item",
+      "target": {
+        "component": "MenuItem",
+        "import": "@enterprise/core/actions"
+      },
+      "slot_map": {
+        "label": {
+          "to": "children",
+          "transform": "text_to_children"
+        },
+        "shortcut": {
+          "to": "shortcut",
+          "transform": "meta_passthrough"
+        },
+        "icon": {
+          "to": "icon",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled"
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Button",
+        "reason": "MenuItem unavailable"
+      },
+      "fallback_chain": [
+        "Button",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for action.menu_item"
+    },
+    {
+      "source_semantic_id": "feedback.toast",
+      "target": {
+        "component": "Toast",
+        "import": "@enterprise/core/feedback"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "message": {
+          "to": "message",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "info": {
+          "target_state": "info"
+        },
+        "success": {
+          "target_state": "success"
+        },
+        "warning": {
+          "target_state": "warning"
+        },
+        "error": {
+          "target_state": "error"
+        }
+      },
+      "fallback": {
+        "component": "Banner",
+        "reason": "Toast unavailable"
+      },
+      "fallback_chain": [
+        "Banner",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for feedback.toast"
+    },
+    {
+      "source_semantic_id": "overlay.context_menu",
+      "target": {
+        "component": "ContextMenu",
+        "import": "@enterprise/core/overlay"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "open": {
+          "target_state": "open",
+          "props": {
+            "open": true
+          }
+        },
+        "closed": {
+          "target_state": "closed",
+          "props": {
+            "open": false
+          }
+        }
+      },
+      "fallback": {
+        "component": "Menu",
+        "reason": "ContextMenu unavailable"
+      },
+      "fallback_chain": [
+        "Menu",
+        "PrimitiveFallback"
+      ],
+      "confidence": 0.82,
+      "notes": "Enterprise mapping for overlay.context_menu"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "$schema": "./adapter-contract.schema.json",
+  "client_id": "client-acme",
+  "design_system": "Acme DS",
+  "version": "0.1.0",
+  "rules": [
+    {
+      "source_semantic_id": "input.text_field",
+      "target": {
+        "component": "TextInput",
+        "import": "@acme/form"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "direct"
+        },
+        "helper_text": {
+          "to": "helperText",
+          "transform": "direct"
+        },
+        "error_text": {
+          "to": "errorMessage",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled"
+        },
+        "focused": {
+          "target_state": "focused"
+        },
+        "error": {
+          "target_state": "error"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "BasicInput",
+        "reason": "TextInput unavailable"
+      },
+      "fallback_chain": [
+        "BasicInput"
+      ],
+      "confidence": 0.85
+    },
+    {
+      "source_semantic_id": "action.button_primary",
+      "target": {
+        "component": "Button",
+        "import": "@acme/actions"
+      },
+      "slot_map": {
+        "label": {
+          "to": "children",
+          "transform": "text_to_children"
+        },
+        "icon": {
+          "to": "leadingIcon",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "enabled",
+          "props": {
+            "variant": "primary"
+          }
+        },
+        "loading": {
+          "target_state": "loading",
+          "props": {
+            "variant": "primary",
+            "loading": true
+          }
+        },
+        "disabled": {
+          "target_state": "disabled",
+          "props": {
+            "variant": "primary",
+            "disabled": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "ButtonSecondary",
+        "reason": "Button unavailable"
+      },
+      "fallback_chain": [
+        "ButtonSecondary"
+      ],
+      "confidence": 0.85
+    }
+  ]
+}

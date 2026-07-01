@@ -1,0 +1,2354 @@
+[
+  {
+    "semantic_id": "layout.page_shell",
+    "category": "layout",
+    "role": "page_container",
+    "slots": {
+      "header": {
+        "required": false,
+        "type": "node"
+      },
+      "body": {
+        "required": true,
+        "type": "node"
+      },
+      "footer": {
+        "required": false,
+        "type": "node"
+      }
+    },
+    "states": [
+      "default"
+    ],
+    "behavior": [
+      "contain"
+    ],
+    "constraints": {
+      "max_primary_actions_per_region": 1
+    },
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "page_container",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "containers"
+  },
+  {
+    "semantic_id": "layout.section",
+    "category": "layout",
+    "role": "content_group",
+    "slots": {
+      "title": {
+        "required": false,
+        "type": "text"
+      },
+      "body": {
+        "required": true,
+        "type": "node"
+      },
+      "actions": {
+        "required": false,
+        "type": "action"
+      }
+    },
+    "states": [
+      "default",
+      "collapsed"
+    ],
+    "behavior": [
+      "group",
+      "optional_collapse"
+    ],
+    "constraints": {
+      "max_actions": 3
+    },
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "content_group",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "containers"
+  },
+  {
+    "semantic_id": "navigation.top_nav",
+    "category": "navigation",
+    "role": "global_navigation",
+    "slots": {
+      "brand": {
+        "required": false,
+        "type": "text"
+      },
+      "items": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      },
+      "actions": {
+        "required": false,
+        "type": "action"
+      }
+    },
+    "states": [
+      "default"
+    ],
+    "behavior": [
+      "navigate"
+    ],
+    "constraints": {
+      "max_items": 7
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "global_navigation",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "global"
+  },
+  {
+    "semantic_id": "navigation.side_nav",
+    "category": "navigation",
+    "role": "context_navigation",
+    "slots": {
+      "items": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      },
+      "active_item": {
+        "required": false,
+        "type": "meta"
+      }
+    },
+    "states": [
+      "default",
+      "collapsed"
+    ],
+    "behavior": [
+      "navigate",
+      "optional_collapse"
+    ],
+    "constraints": {
+      "min_items": 1
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "context_navigation",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "local"
+  },
+  {
+    "semantic_id": "input.text_field",
+    "category": "input",
+    "role": "data_entry",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "value": {
+        "required": false,
+        "type": "text"
+      },
+      "helper_text": {
+        "required": false,
+        "type": "text"
+      },
+      "error_text": {
+        "required": false,
+        "type": "text"
+      }
+    },
+    "states": [
+      "default",
+      "focused",
+      "error",
+      "disabled"
+    ],
+    "behavior": [
+      "editable",
+      "validatable"
+    ],
+    "constraints": {
+      "accessibility_label_required": true
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "data_entry",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "text_entry"
+  },
+  {
+    "semantic_id": "input.select",
+    "category": "input",
+    "role": "data_selection",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "options": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      },
+      "helper_text": {
+        "required": false,
+        "type": "text"
+      }
+    },
+    "states": [
+      "default",
+      "open",
+      "error",
+      "disabled"
+    ],
+    "behavior": [
+      "select",
+      "validatable"
+    ],
+    "constraints": {
+      "min_options": 2
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "data_selection",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "selection"
+  },
+  {
+    "semantic_id": "input.checkbox",
+    "category": "input",
+    "role": "boolean_choice",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "helper_text": {
+        "required": false,
+        "type": "text"
+      }
+    },
+    "states": [
+      "unchecked",
+      "checked",
+      "disabled"
+    ],
+    "behavior": [
+      "toggle"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "boolean_choice",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "selection"
+  },
+  {
+    "semantic_id": "action.button_primary",
+    "category": "action",
+    "role": "primary_action",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "icon": {
+        "required": false,
+        "type": "media"
+      }
+    },
+    "states": [
+      "default",
+      "loading",
+      "disabled"
+    ],
+    "behavior": [
+      "click"
+    ],
+    "constraints": {
+      "max_per_region": 1
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": true
+    },
+    "accessibility": {
+      "aria_role": "primary_action",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "buttons"
+  },
+  {
+    "semantic_id": "action.button_secondary",
+    "category": "action",
+    "role": "secondary_action",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "icon": {
+        "required": false,
+        "type": "media"
+      }
+    },
+    "states": [
+      "default",
+      "disabled"
+    ],
+    "behavior": [
+      "click"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "secondary_action",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "buttons"
+  },
+  {
+    "semantic_id": "data.card",
+    "category": "data",
+    "role": "content_summary",
+    "slots": {
+      "title": {
+        "required": true,
+        "type": "text"
+      },
+      "body": {
+        "required": false,
+        "type": "text"
+      },
+      "meta": {
+        "required": false,
+        "type": "meta"
+      },
+      "actions": {
+        "required": false,
+        "type": "action"
+      }
+    },
+    "states": [
+      "default",
+      "loading",
+      "empty"
+    ],
+    "behavior": [
+      "read",
+      "optional_click"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": true
+    },
+    "accessibility": {
+      "aria_role": "content_summary",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "summaries"
+  },
+  {
+    "semantic_id": "data.table",
+    "category": "data",
+    "role": "structured_data_view",
+    "slots": {
+      "columns": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      },
+      "rows": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      },
+      "actions": {
+        "required": false,
+        "type": "action"
+      }
+    },
+    "states": [
+      "default",
+      "loading",
+      "empty",
+      "error"
+    ],
+    "behavior": [
+      "sort",
+      "paginate",
+      "optional_select"
+    ],
+    "constraints": {
+      "min_columns": 1
+    },
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": true
+    },
+    "accessibility": {
+      "aria_role": "structured_data_view",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "collections"
+  },
+  {
+    "semantic_id": "data.list",
+    "category": "data",
+    "role": "collection_view",
+    "slots": {
+      "items": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      }
+    },
+    "states": [
+      "default",
+      "loading",
+      "empty",
+      "error"
+    ],
+    "behavior": [
+      "read",
+      "optional_select"
+    ],
+    "constraints": {
+      "min_items": 1
+    },
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": true
+    },
+    "accessibility": {
+      "aria_role": "collection_view",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "collections"
+  },
+  {
+    "semantic_id": "feedback.alert",
+    "category": "feedback",
+    "role": "status_message",
+    "slots": {
+      "title": {
+        "required": false,
+        "type": "text"
+      },
+      "message": {
+        "required": true,
+        "type": "text"
+      },
+      "actions": {
+        "required": false,
+        "type": "action"
+      }
+    },
+    "states": [
+      "info",
+      "success",
+      "warning",
+      "error"
+    ],
+    "behavior": [
+      "announce",
+      "optional_dismiss"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "status_message",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "polite"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "inline"
+  },
+  {
+    "semantic_id": "feedback.empty_state",
+    "category": "feedback",
+    "role": "no_data_guidance",
+    "slots": {
+      "title": {
+        "required": true,
+        "type": "text"
+      },
+      "message": {
+        "required": true,
+        "type": "text"
+      },
+      "action": {
+        "required": false,
+        "type": "action"
+      }
+    },
+    "states": [
+      "default"
+    ],
+    "behavior": [
+      "guide"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "no_data_guidance",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "polite"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "inline"
+  },
+  {
+    "semantic_id": "overlay.modal",
+    "category": "overlay",
+    "role": "blocking_dialog",
+    "slots": {
+      "title": {
+        "required": true,
+        "type": "text"
+      },
+      "body": {
+        "required": true,
+        "type": "node"
+      },
+      "actions": {
+        "required": true,
+        "type": "action"
+      }
+    },
+    "states": [
+      "open",
+      "closed"
+    ],
+    "behavior": [
+      "block",
+      "dismiss",
+      "confirm"
+    ],
+    "constraints": {
+      "requires_focus_trap": true
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "blocking_dialog",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "blocking"
+  },
+  {
+    "semantic_id": "navigation.tabs",
+    "category": "navigation",
+    "role": "section_navigation",
+    "slots": {
+      "items": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      },
+      "active_item": {
+        "required": true,
+        "type": "meta"
+      }
+    },
+    "states": [
+      "default"
+    ],
+    "behavior": [
+      "navigate",
+      "switch_context"
+    ],
+    "constraints": {
+      "min_items": 2
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "section_navigation",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "local"
+  },
+  {
+    "semantic_id": "navigation.breadcrumb",
+    "category": "navigation",
+    "role": "path_navigation",
+    "slots": {
+      "items": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      }
+    },
+    "states": [
+      "default"
+    ],
+    "behavior": [
+      "navigate_hierarchy"
+    ],
+    "constraints": {
+      "min_items": 1
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "path_navigation",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "hierarchy"
+  },
+  {
+    "semantic_id": "navigation.pagination",
+    "category": "navigation",
+    "role": "paged_navigation",
+    "slots": {
+      "current_page": {
+        "required": true,
+        "type": "meta"
+      },
+      "total_pages": {
+        "required": true,
+        "type": "meta"
+      }
+    },
+    "states": [
+      "default",
+      "disabled"
+    ],
+    "behavior": [
+      "navigate_pages"
+    ],
+    "constraints": {
+      "min_pages": 1
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "paged_navigation",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "flow_navigation"
+  },
+  {
+    "semantic_id": "input.text_area",
+    "category": "input",
+    "role": "multi_line_entry",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "value": {
+        "required": false,
+        "type": "text"
+      },
+      "helper_text": {
+        "required": false,
+        "type": "text"
+      },
+      "error_text": {
+        "required": false,
+        "type": "text"
+      }
+    },
+    "states": [
+      "default",
+      "focused",
+      "error",
+      "disabled"
+    ],
+    "behavior": [
+      "editable",
+      "validatable"
+    ],
+    "constraints": {
+      "accessibility_label_required": true
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "multi_line_entry",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "text_entry"
+  },
+  {
+    "semantic_id": "input.radio_group",
+    "category": "input",
+    "role": "single_choice",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "options": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      },
+      "helper_text": {
+        "required": false,
+        "type": "text"
+      }
+    },
+    "states": [
+      "default",
+      "error",
+      "disabled"
+    ],
+    "behavior": [
+      "select",
+      "validatable"
+    ],
+    "constraints": {
+      "min_options": 2
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "single_choice",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "selection"
+  },
+  {
+    "semantic_id": "input.toggle_switch",
+    "category": "input",
+    "role": "boolean_toggle",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      }
+    },
+    "states": [
+      "off",
+      "on",
+      "disabled"
+    ],
+    "behavior": [
+      "toggle"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "boolean_toggle",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "selection"
+  },
+  {
+    "semantic_id": "input.search_field",
+    "category": "input",
+    "role": "query_entry",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "value": {
+        "required": false,
+        "type": "text"
+      },
+      "helper_text": {
+        "required": false,
+        "type": "text"
+      }
+    },
+    "states": [
+      "default",
+      "focused",
+      "disabled"
+    ],
+    "behavior": [
+      "editable",
+      "search"
+    ],
+    "constraints": {
+      "accessibility_label_required": true
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "query_entry",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "text_entry"
+  },
+  {
+    "semantic_id": "input.date_input",
+    "category": "input",
+    "role": "date_entry",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "value": {
+        "required": false,
+        "type": "text"
+      },
+      "helper_text": {
+        "required": false,
+        "type": "text"
+      },
+      "error_text": {
+        "required": false,
+        "type": "text"
+      }
+    },
+    "states": [
+      "default",
+      "focused",
+      "error",
+      "disabled"
+    ],
+    "behavior": [
+      "editable",
+      "validatable"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "date_entry",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "specialized"
+  },
+  {
+    "semantic_id": "input.file_input",
+    "category": "input",
+    "role": "file_upload",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "helper_text": {
+        "required": false,
+        "type": "text"
+      },
+      "file_name": {
+        "required": false,
+        "type": "text"
+      }
+    },
+    "states": [
+      "default",
+      "selected",
+      "error",
+      "disabled"
+    ],
+    "behavior": [
+      "upload",
+      "validatable"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": true
+    },
+    "accessibility": {
+      "aria_role": "file_upload",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "specialized"
+  },
+  {
+    "semantic_id": "action.icon_button",
+    "category": "action",
+    "role": "compact_action",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "icon": {
+        "required": true,
+        "type": "media"
+      }
+    },
+    "states": [
+      "default",
+      "disabled"
+    ],
+    "behavior": [
+      "click"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "compact_action",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "buttons"
+  },
+  {
+    "semantic_id": "data.badge",
+    "category": "data",
+    "role": "status_tag",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      }
+    },
+    "states": [
+      "neutral",
+      "success",
+      "warning",
+      "error"
+    ],
+    "behavior": [
+      "label"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "status_tag",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "status"
+  },
+  {
+    "semantic_id": "data.key_value_list",
+    "category": "data",
+    "role": "detail_summary",
+    "slots": {
+      "items": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      }
+    },
+    "states": [
+      "default",
+      "empty"
+    ],
+    "behavior": [
+      "read"
+    ],
+    "constraints": {
+      "min_items": 1
+    },
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "detail_summary",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "summaries"
+  },
+  {
+    "semantic_id": "feedback.inline_error",
+    "category": "feedback",
+    "role": "field_error",
+    "slots": {
+      "message": {
+        "required": true,
+        "type": "text"
+      }
+    },
+    "states": [
+      "default"
+    ],
+    "behavior": [
+      "announce"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "field_error",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "polite"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "inline"
+  },
+  {
+    "semantic_id": "feedback.loading_indicator",
+    "category": "feedback",
+    "role": "progress_indicator",
+    "slots": {
+      "label": {
+        "required": false,
+        "type": "text"
+      }
+    },
+    "states": [
+      "default"
+    ],
+    "behavior": [
+      "show_progress"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": true
+    },
+    "accessibility": {
+      "aria_role": "progress_indicator",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "polite"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "progress"
+  },
+  {
+    "semantic_id": "feedback.progress_bar",
+    "category": "feedback",
+    "role": "determinate_progress",
+    "slots": {
+      "label": {
+        "required": false,
+        "type": "text"
+      },
+      "value": {
+        "required": true,
+        "type": "meta"
+      }
+    },
+    "states": [
+      "default",
+      "indeterminate",
+      "complete"
+    ],
+    "behavior": [
+      "show_progress"
+    ],
+    "constraints": {
+      "value_range": "0_to_100"
+    },
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": true
+    },
+    "accessibility": {
+      "aria_role": "determinate_progress",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "polite"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "progress"
+  },
+  {
+    "semantic_id": "overlay.tooltip",
+    "category": "overlay",
+    "role": "context_hint",
+    "slots": {
+      "message": {
+        "required": true,
+        "type": "text"
+      }
+    },
+    "states": [
+      "hidden",
+      "visible"
+    ],
+    "behavior": [
+      "hint",
+      "show_on_focus"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "context_hint",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "anchored"
+  },
+  {
+    "semantic_id": "overlay.popover",
+    "category": "overlay",
+    "role": "anchored_panel",
+    "slots": {
+      "title": {
+        "required": false,
+        "type": "text"
+      },
+      "body": {
+        "required": true,
+        "type": "node"
+      }
+    },
+    "states": [
+      "open",
+      "closed"
+    ],
+    "behavior": [
+      "reveal",
+      "dismiss"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "anchored_panel",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "anchored"
+  },
+  {
+    "semantic_id": "overlay.drawer",
+    "category": "overlay",
+    "role": "side_panel",
+    "slots": {
+      "title": {
+        "required": true,
+        "type": "text"
+      },
+      "body": {
+        "required": true,
+        "type": "node"
+      },
+      "actions": {
+        "required": false,
+        "type": "action"
+      }
+    },
+    "states": [
+      "open",
+      "closed"
+    ],
+    "behavior": [
+      "reveal",
+      "dismiss"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "side_panel",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "blocking"
+  },
+  {
+    "semantic_id": "flow.stepper",
+    "category": "flow",
+    "role": "multi_step_progress",
+    "slots": {
+      "steps": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      },
+      "active_step": {
+        "required": true,
+        "type": "meta"
+      }
+    },
+    "states": [
+      "default"
+    ],
+    "behavior": [
+      "navigate_steps",
+      "show_progress"
+    ],
+    "constraints": {
+      "min_steps": 2
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": true
+    },
+    "accessibility": {
+      "aria_role": "multi_step_progress",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "progression"
+  },
+  {
+    "semantic_id": "layout.stack",
+    "category": "layout",
+    "role": "vertical_layout",
+    "slots": {
+      "items": {
+        "required": true,
+        "type": "node",
+        "repeatable": true
+      }
+    },
+    "states": [
+      "default",
+      "compact"
+    ],
+    "behavior": [
+      "arrange_vertical"
+    ],
+    "constraints": {
+      "min_items": 1
+    },
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "vertical_layout",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "composition"
+  },
+  {
+    "semantic_id": "layout.inline",
+    "category": "layout",
+    "role": "horizontal_layout",
+    "slots": {
+      "items": {
+        "required": true,
+        "type": "node",
+        "repeatable": true
+      }
+    },
+    "states": [
+      "default",
+      "wrap"
+    ],
+    "behavior": [
+      "arrange_horizontal"
+    ],
+    "constraints": {
+      "min_items": 1
+    },
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "horizontal_layout",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "composition"
+  },
+  {
+    "semantic_id": "action.menu_item",
+    "category": "action",
+    "role": "menu_action",
+    "slots": {
+      "label": {
+        "required": true,
+        "type": "text"
+      },
+      "shortcut": {
+        "required": false,
+        "type": "meta"
+      },
+      "icon": {
+        "required": false,
+        "type": "media"
+      }
+    },
+    "states": [
+      "default",
+      "disabled"
+    ],
+    "behavior": [
+      "click",
+      "optional_navigate"
+    ],
+    "constraints": {},
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "menu_action",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "menu_actions"
+  },
+  {
+    "semantic_id": "feedback.toast",
+    "category": "feedback",
+    "role": "transient_message",
+    "slots": {
+      "message": {
+        "required": true,
+        "type": "text"
+      },
+      "title": {
+        "required": false,
+        "type": "text"
+      }
+    },
+    "states": [
+      "info",
+      "success",
+      "warning",
+      "error"
+    ],
+    "behavior": [
+      "announce",
+      "auto_dismiss"
+    ],
+    "constraints": {
+      "dismiss_timeout_ms": 5000
+    },
+    "interaction": {
+      "events": [
+        "on_render"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "transient_message",
+      "keyboard": [
+        "read_only"
+      ],
+      "live_region": "polite"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "transient"
+  },
+  {
+    "semantic_id": "overlay.context_menu",
+    "category": "overlay",
+    "role": "context_actions",
+    "slots": {
+      "items": {
+        "required": true,
+        "type": "list",
+        "repeatable": true
+      }
+    },
+    "states": [
+      "open",
+      "closed"
+    ],
+    "behavior": [
+      "reveal",
+      "dismiss",
+      "choose_action"
+    ],
+    "constraints": {
+      "min_items": 1
+    },
+    "interaction": {
+      "events": [
+        "on_interact"
+      ],
+      "async": false
+    },
+    "accessibility": {
+      "aria_role": "context_actions",
+      "keyboard": [
+        "tab_focus",
+        "enter_activate"
+      ],
+      "live_region": "none"
+    },
+    "responsive": {
+      "supports_compact": true,
+      "breakpoints": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "i18n": {
+      "text_direction": "both",
+      "locale_sensitive_slots": [
+        "label",
+        "title",
+        "message",
+        "value"
+      ],
+      "truncation": "wrap"
+    },
+    "subcategory": "contextual"
+  }
+]

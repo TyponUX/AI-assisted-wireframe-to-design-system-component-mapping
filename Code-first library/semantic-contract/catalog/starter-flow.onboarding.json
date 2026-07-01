@@ -1,0 +1,87 @@
+{
+  "screen_id": "onboarding.account_setup",
+  "name": "Onboarding - Account Setup",
+  "hypothesis": "Users can complete account setup in less than 2 minutes with clear guidance.",
+  "root": {
+    "instance_id": "page-1",
+    "semantic_id": "layout.page_shell",
+    "state": "default",
+    "props": {
+      "title": "Create your account"
+    },
+    "children": [
+      {
+        "instance_id": "top-nav-1",
+        "semantic_id": "navigation.top_nav",
+        "state": "default",
+        "props": {
+          "items": ["Product", "Pricing", "Help"]
+        }
+      },
+      {
+        "instance_id": "section-1",
+        "semantic_id": "layout.section",
+        "state": "default",
+        "props": {
+          "title": "Your details"
+        },
+        "children": [
+          {
+            "instance_id": "field-name-1",
+            "semantic_id": "input.text_field",
+            "state": "default",
+            "props": {
+              "label": "Full name",
+              "value": "",
+              "helper_text": "Use your legal name"
+            }
+          },
+          {
+            "instance_id": "field-email-1",
+            "semantic_id": "input.text_field",
+            "state": "default",
+            "props": {
+              "label": "Work email",
+              "value": ""
+            }
+          },
+          {
+            "instance_id": "field-role-1",
+            "semantic_id": "input.select",
+            "state": "default",
+            "props": {
+              "label": "Role",
+              "options": ["Designer", "Product Manager", "Engineer", "Other"]
+            }
+          },
+          {
+            "instance_id": "checkbox-terms-1",
+            "semantic_id": "input.checkbox",
+            "state": "unchecked",
+            "props": {
+              "label": "I agree to the terms"
+            }
+          },
+          {
+            "instance_id": "button-next-1",
+            "semantic_id": "action.button_primary",
+            "state": "default",
+            "intent": "submit_step",
+            "props": {
+              "label": "Continue"
+            }
+          }
+        ]
+      },
+      {
+        "instance_id": "stepper-1",
+        "semantic_id": "flow.stepper",
+        "state": "default",
+        "props": {
+          "steps": ["Account", "Preferences", "Finish"],
+          "active_step": 1
+        }
+      }
+    ]
+  }
+}

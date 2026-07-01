@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "semantic-component.schema.json",
+  "title": "Semantic Component",
+  "type": "object",
+  "required": [
+    "semantic_id",
+    "category",
+    "subcategory",
+    "role",
+    "slots",
+    "states",
+    "behavior",
+    "constraints"
+  ],
+  "properties": {
+    "semantic_id": {
+      "type": "string",
+      "pattern": "^[a-z]+(\\.[a-z0-9_]+)+$"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "layout",
+        "navigation",
+        "input",
+        "action",
+        "data",
+        "feedback",
+        "overlay",
+        "flow"
+      ]
+    },
+    "subcategory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role": {
+      "type": "string"
+    },
+    "slots": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/slotDefinition"
+      }
+    },
+    "states": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "behavior": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "array", "object", "null"]
+      }
+    },
+    "interaction": {
+      "$ref": "#/$defs/interactionDefinition"
+    },
+    "accessibility": {
+      "$ref": "#/$defs/accessibilityDefinition"
+    },
+    "responsive": {
+      "$ref": "#/$defs/responsiveDefinition"
+    },
+    "i18n": {
+      "$ref": "#/$defs/i18nDefinition"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "slotDefinition": {
+      "type": "object",
+      "required": ["required", "type"],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["text", "node", "action", "list", "media", "meta"]
+        },
+        "repeatable": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "interactionDefinition": {
+      "type": "object",
+      "required": ["events"],
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "async": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "accessibilityDefinition": {
+      "type": "object",
+      "required": ["aria_role", "keyboard"],
+      "properties": {
+        "aria_role": { "type": "string", "minLength": 1 },
+        "keyboard": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "live_region": {
+          "type": "string",
+          "enum": ["none", "polite", "assertive"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "responsiveDefinition": {
+      "type": "object",
+      "required": ["supports_compact", "breakpoints"],
+      "properties": {
+        "supports_compact": { "type": "boolean" },
+        "breakpoints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["xs", "sm", "md", "lg", "xl"]
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "i18nDefinition": {
+      "type": "object",
+      "required": ["text_direction", "locale_sensitive_slots", "truncation"],
+      "properties": {
+        "text_direction": {
+          "type": "string",
+          "enum": ["ltr", "rtl", "both"]
+        },
+        "locale_sensitive_slots": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "truncation": {
+          "type": "string",
+          "enum": ["wrap", "truncate", "clip"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

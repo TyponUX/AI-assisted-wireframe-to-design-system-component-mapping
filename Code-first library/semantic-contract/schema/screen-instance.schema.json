@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "screen-instance.schema.json",
+  "title": "Semantic Screen Instance",
+  "type": "object",
+  "required": ["screen_id", "name", "root"],
+  "properties": {
+    "screen_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "hypothesis": {
+      "type": "string"
+    },
+    "root": {
+      "$ref": "#/$defs/node"
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["instance_id", "semantic_id", "state", "props"],
+      "properties": {
+        "instance_id": {
+          "type": "string"
+        },
+        "semantic_id": {
+          "type": "string",
+          "pattern": "^[a-z]+(\\.[a-z0-9_]+)+$"
+        },
+        "state": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "string"
+        },
+        "intent": {
+          "type": "string"
+        },
+        "props": {
+          "type": "object"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

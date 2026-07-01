@@ -1,0 +1,81 @@
+{
+  "screen_id": "new_authored_screen",
+  "name": "New Authored Screen",
+  "hypothesis": "Dashboard Overview authored screen",
+  "root": {
+    "instance_id": "template-dashboard-root",
+    "semantic_id": "layout.page_shell",
+    "state": "default",
+    "props": {
+      "title": "Dashboard",
+      "intent_annotation": "rapid_prototype",
+      "state_annotation": "draft",
+      "template_id": "dashboard-overview"
+    },
+    "children": [
+      {
+        "instance_id": "template-dashboard-nav",
+        "semantic_id": "navigation.top_nav",
+        "state": "default",
+        "props": {
+          "items": [
+            "Overview",
+            "Reports",
+            "Settings"
+          ]
+        }
+      },
+      {
+        "instance_id": "template-dashboard-section",
+        "semantic_id": "layout.section",
+        "state": "default",
+        "props": {
+          "title": "KPI Snapshot"
+        },
+        "children": [
+          {
+            "instance_id": "template-dashboard-cards",
+            "semantic_id": "layout.inline",
+            "state": "wrap",
+            "props": {},
+            "children": [
+              {
+                "instance_id": "template-dashboard-card1",
+                "semantic_id": "data.card",
+                "state": "default",
+                "props": {
+                  "title": "Revenue",
+                  "body": "$24,500"
+                }
+              },
+              {
+                "instance_id": "template-dashboard-card2",
+                "semantic_id": "data.card",
+                "state": "default",
+                "props": {
+                  "title": "Signups",
+                  "body": "1,284"
+                }
+              }
+            ]
+          },
+          {
+            "instance_id": "template-dashboard-table",
+            "semantic_id": "data.table",
+            "state": "default",
+            "props": {
+              "columns": [
+                "Project",
+                "Status"
+              ],
+              "rows": [
+                "Alpha - Active",
+                "Beta - Pending"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
