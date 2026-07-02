@@ -1,0 +1,724 @@
+{
+  "name": "semantic_typography_allocation_matrix",
+  "version": "1.0.0",
+  "description": "Typography role allocation for semantic components and slots. Update typography-role-map.json to change font behavior globally.",
+  "supported_roles": [
+    "display",
+    "heading_l",
+    "heading_m",
+    "heading_s",
+    "body_l",
+    "body_m",
+    "body_s",
+    "label",
+    "caption"
+  ],
+  "default_component_role": "body_m",
+  "allocations": {
+    "layout.page_shell": {
+      "component_default": "body_m",
+      "title_role": "heading_l",
+      "slots": {
+        "header": "body_m",
+        "body": "body_m",
+        "footer": "body_m"
+      }
+    },
+    "layout.section": {
+      "component_default": "body_m",
+      "title_role": "heading_m",
+      "slots": {
+        "title": "heading_m",
+        "body": "body_m",
+        "actions": "body_m"
+      }
+    },
+    "navigation.top_nav": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "brand": "heading_s",
+        "items": "body_m",
+        "actions": "body_m"
+      }
+    },
+    "navigation.side_nav": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m",
+        "active_item": "body_m"
+      }
+    },
+    "input.text_field": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m",
+        "helper_text": "caption",
+        "error_text": "caption"
+      }
+    },
+    "input.select": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "options": "body_m",
+        "helper_text": "caption"
+      }
+    },
+    "input.checkbox": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "helper_text": "caption"
+      }
+    },
+    "action.button_primary": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "icon": "body_m"
+      }
+    },
+    "action.button_secondary": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "icon": "body_m"
+      }
+    },
+    "data.card": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "body": "body_m",
+        "meta": "body_m",
+        "actions": "body_m"
+      }
+    },
+    "data.metric": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m",
+        "context": "body_m",
+        "trend": "body_m"
+      }
+    },
+    "data.metric_tile": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m",
+        "context": "body_m",
+        "trend": "body_m"
+      }
+    },
+    "data.chart_bar": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "series": "body_m",
+        "legend": "body_m"
+      }
+    },
+    "data.chart_donut": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "series": "body_m",
+        "total": "body_m"
+      }
+    },
+    "data.trend_indicator": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "direction": "body_m",
+        "value": "body_m"
+      }
+    },
+    "data.table": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "columns": "body_m",
+        "rows": "body_m",
+        "actions": "body_m"
+      }
+    },
+    "data.list": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m"
+      }
+    },
+    "feedback.alert": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "message": "body_s",
+        "actions": "body_m"
+      }
+    },
+    "feedback.empty_state": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "message": "body_s",
+        "action": "body_m"
+      }
+    },
+    "overlay.modal": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "body": "body_m",
+        "actions": "body_m"
+      }
+    },
+    "navigation.tabs": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m",
+        "active_item": "body_m"
+      }
+    },
+    "navigation.breadcrumb": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m"
+      }
+    },
+    "navigation.pagination": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "current_page": "body_m",
+        "total_pages": "body_m"
+      }
+    },
+    "input.text_area": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m",
+        "helper_text": "caption",
+        "error_text": "caption"
+      }
+    },
+    "input.radio_group": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "options": "body_m",
+        "helper_text": "caption"
+      }
+    },
+    "input.toggle_switch": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label"
+      }
+    },
+    "input.search_field": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m",
+        "helper_text": "caption"
+      }
+    },
+    "input.date_input": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m",
+        "helper_text": "caption",
+        "error_text": "caption"
+      }
+    },
+    "input.file_input": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "helper_text": "caption",
+        "file_name": "body_m"
+      }
+    },
+    "action.icon_button": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "icon": "body_m"
+      }
+    },
+    "data.badge": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label"
+      }
+    },
+    "data.key_value_list": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m"
+      }
+    },
+    "feedback.inline_error": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "message": "body_s"
+      }
+    },
+    "feedback.loading_indicator": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label"
+      }
+    },
+    "feedback.progress_bar": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m"
+      }
+    },
+    "overlay.tooltip": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "message": "body_s"
+      }
+    },
+    "overlay.popover": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "body": "body_m"
+      }
+    },
+    "overlay.drawer": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "body": "body_m",
+        "actions": "body_m"
+      }
+    },
+    "flow.stepper": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "steps": "body_m",
+        "active_step": "body_m"
+      }
+    },
+    "layout.stack": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m"
+      }
+    },
+    "layout.inline": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m"
+      }
+    },
+    "action.menu_item": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "shortcut": "caption",
+        "icon": "body_m"
+      }
+    },
+    "feedback.toast": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "message": "body_s",
+        "title": "heading_s"
+      }
+    },
+    "overlay.context_menu": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m"
+      }
+    },
+    "action.float_button": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "icon": "body_m"
+      }
+    },
+    "layout.divider": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label"
+      }
+    },
+    "layout.grid": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m"
+      }
+    },
+    "layout.masonry": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m"
+      }
+    },
+    "layout.splitter": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "primary": "body_m",
+        "secondary": "body_m"
+      }
+    },
+    "layout.affix": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "body": "body_m"
+      }
+    },
+    "layout.border_beam": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "body": "body_m"
+      }
+    },
+    "navigation.anchor": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m",
+        "active_item": "body_m"
+      }
+    },
+    "navigation.menu": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m",
+        "active_item": "body_m"
+      }
+    },
+    "overlay.dropdown": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "trigger": "body_m",
+        "items": "body_m"
+      }
+    },
+    "overlay.tour": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "steps": "body_m",
+        "active_step": "body_m"
+      }
+    },
+    "overlay.popconfirm": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "message": "body_s",
+        "confirm_action": "body_m",
+        "cancel_action": "body_m"
+      }
+    },
+    "input.autocomplete": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m",
+        "options": "body_m"
+      }
+    },
+    "input.cascader": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "options": "body_m"
+      }
+    },
+    "input.color_picker": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m"
+      }
+    },
+    "input.form": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "fields": "body_m",
+        "actions": "body_m"
+      }
+    },
+    "input.number_input": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m",
+        "helper_text": "caption"
+      }
+    },
+    "input.mentions": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m",
+        "suggestions": "body_m"
+      }
+    },
+    "input.rate": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m"
+      }
+    },
+    "input.slider": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m",
+        "min": "body_m",
+        "max": "body_m"
+      }
+    },
+    "input.time_input": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "value": "body_m"
+      }
+    },
+    "input.transfer": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "source_items": "body_m",
+        "target_items": "body_m"
+      }
+    },
+    "input.tree_select": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "options": "body_m"
+      }
+    },
+    "input.segmented_control": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "options": "body_m",
+        "value": "body_m"
+      }
+    },
+    "data.avatar": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label",
+        "image": "body_m"
+      }
+    },
+    "data.calendar": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "events": "body_m",
+        "active_date": "body_m"
+      }
+    },
+    "data.carousel": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m"
+      }
+    },
+    "data.image": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "src": "body_m",
+        "alt": "body_m",
+        "caption": "caption"
+      }
+    },
+    "data.qr_code": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "value": "body_m",
+        "label": "label"
+      }
+    },
+    "data.icon": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "name": "body_m",
+        "label": "label"
+      }
+    },
+    "data.typography": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "text": "body_m",
+        "variant": "body_m"
+      }
+    },
+    "data.timeline": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m"
+      }
+    },
+    "data.tree": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "nodes": "body_m"
+      }
+    },
+    "data.collapse": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "items": "body_m"
+      }
+    },
+    "feedback.result": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "message": "body_s",
+        "actions": "body_m"
+      }
+    },
+    "feedback.skeleton": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label"
+      }
+    },
+    "feedback.notification": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "title": "heading_s",
+        "message": "body_s",
+        "actions": "body_m"
+      }
+    },
+    "feedback.message": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "message": "body_s"
+      }
+    },
+    "feedback.watermark": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "label": "label"
+      }
+    },
+    "flow.app_context": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "body": "body_m"
+      }
+    },
+    "flow.config_provider": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "body": "body_m",
+        "config": "body_m"
+      }
+    },
+    "flow.utility": {
+      "component_default": "body_m",
+      "title_role": "heading_s",
+      "slots": {
+        "body": "body_m",
+        "meta": "body_m"
+      }
+    }
+  }
+}

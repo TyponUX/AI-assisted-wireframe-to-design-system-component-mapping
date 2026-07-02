@@ -153,3 +153,55 @@ export interface AdapterCompatibilityMatrix {
     }
   >;
 }
+
+export type TypographyRoleName =
+  | "display"
+  | "heading_l"
+  | "heading_m"
+  | "heading_s"
+  | "body_l"
+  | "body_m"
+  | "body_s"
+  | "label"
+  | "caption";
+
+export interface TypographyRoleValue {
+  font_size_px: number;
+  line_height_px: number;
+  font_weight: 400 | 500 | 600 | 700;
+}
+
+export interface TypographyRoleDefinition {
+  desktop: TypographyRoleValue;
+  mobile: TypographyRoleValue;
+}
+
+export interface TypographyRoleMap {
+  name: "semantic_typography_role_map";
+  version: string;
+  description?: string;
+  base_font_family: string;
+  mobile_breakpoint_px: number;
+  weights: {
+    regular: 400;
+    medium: 500;
+    semibold: 600;
+    bold: 700;
+  };
+  roles: Record<TypographyRoleName, TypographyRoleDefinition>;
+}
+
+export interface TypographyAllocationEntry {
+  component_default: TypographyRoleName;
+  title_role: TypographyRoleName;
+  slots: Record<string, TypographyRoleName>;
+}
+
+export interface TypographyAllocationMatrix {
+  name: "semantic_typography_allocation_matrix";
+  version: string;
+  description?: string;
+  supported_roles: TypographyRoleName[];
+  default_component_role: TypographyRoleName;
+  allocations: Record<string, TypographyAllocationEntry>;
+}

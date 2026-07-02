@@ -1,5 +1,5 @@
 import "./App.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { starterFlow } from "./semantic/contract";
 import { NodeRenderer } from "./semantic/renderer";
 import { validateContracts } from "./semantic/validate";
@@ -7,6 +7,8 @@ import { componentCatalog } from "./semantic/contract";
 import { buildSampleNode, buildSampleNodeForState } from "./semantic/samples";
 import { buildScreenFromTemplate, pageTemplates } from "./semantic/templates";
 import rendererStateCoverage from "./semantic/renderer-state-coverage.json";
+import typographyRoleMap from "../../semantic-contract/catalog/typography-role-map.json";
+import typographyAllocationMatrix from "../../semantic-contract/catalog/typography-allocation.matrix.json";
 import baselineAdapter from "../../mapping/client-adapter.baseline.json";
 import enterpriseAdapter from "../../mapping/client-adapter.enterprise.json";
 import type { SemanticNode } from "./semantic/types";
@@ -31,6 +33,106 @@ const adapterRegistry: AdapterContractFile[] = [
   enterpriseAdapter as AdapterContractFile,
 ];
 
+type TypographyRoleName =
+  | "display"
+  | "heading_l"
+  | "heading_m"
+  | "heading_s"
+  | "body_l"
+  | "body_m"
+  | "body_s"
+  | "label"
+  | "caption";
+
+type TypographyRoleValue = {
+  font_size_px: number;
+  line_height_px: number;
+  font_weight: number;
+};
+
+type TypographyRoleDefinition = {
+  desktop: TypographyRoleValue;
+  mobile: TypographyRoleValue;
+};
+
+type TypographyRoleMap = {
+  mobile_breakpoint_px: number;
+  roles: Record<TypographyRoleName, TypographyRoleDefinition>;
+  base_font_family?: string;
+};
+
+type TypographyAllocationEntry = {
+  component_default: TypographyRoleName;
+  title_role: TypographyRoleName;
+  slots: Record<string, TypographyRoleName>;
+};
+
+type TypographyAllocationMatrix = {
+  default_component_role: TypographyRoleName;
+  allocations: Record<string, TypographyAllocationEntry>;
+};
+
+type FontFamilyOption = {
+  label: string;
+  value: string;
+};
+
+type ColorTokenUsage = {
+  token: string;
+  hex: string;
+  usage: string;
+  displayName?: string;
+};
+
+type ColorTokenValues = Record<string, string>;
+
+const typographyRoleOrder: TypographyRoleName[] = [
+  "display",
+  "heading_l",
+  "heading_m",
+  "heading_s",
+  "body_l",
+  "body_m",
+  "body_s",
+  "label",
+  "caption",
+];
+
+const colorTokenUsageMap: ColorTokenUsage[] = [
+  {
+    token: "--color-text-strong",
+    hex: "#1d1d1d",
+    usage: "Buttons and emphasized text",
+    displayName: "Primary colour",
+  },
+  {
+    token: "--color-surface-inverse",
+    hex: "#222222",
+    usage: "Active toggles and inverse surfaces",
+    displayName: "secondary colour",
+  },
+  { token: "--color-surface", hex: "#ffffff", usage: "Cards, panels, primary surfaces" },
+  { token: "--color-surface-subtle", hex: "#f7f7f7", usage: "Canvas and subtle backgrounds" },
+  { token: "--color-surface-soft", hex: "#efefef", usage: "Buttons, controls, muted rows" },
+  { token: "--color-border", hex: "#bebebe", usage: "Default component borders" },
+  { token: "--color-border-subtle", hex: "#d4d4d4", usage: "Dividers and table separators" },
+  { token: "--color-border-strong", hex: "#8b8b8b", usage: "Strong borders and outlines" },
+  { token: "--color-text-primary", hex: "#1f1f1f", usage: "Default body text" },
+  { token: "--color-text-muted", hex: "#525252", usage: "Support copy and metadata" },
+  { token: "--color-success-bg", hex: "#f4f9f4", usage: "Success backgrounds" },
+  { token: "--color-success-border", hex: "#6e8b6e", usage: "Success borders" },
+  { token: "--color-warning-bg", hex: "#faf8f1", usage: "Warning backgrounds" },
+  { token: "--color-warning-border", hex: "#9a8d68", usage: "Warning borders" },
+  { token: "--color-danger-bg", hex: "#f9f3f3", usage: "Error backgrounds" },
+  { token: "--color-danger-border", hex: "#9c7a7a", usage: "Error borders" },
+  { token: "--color-info-bg", hex: "#f2f8fd", usage: "Info/notice backgrounds" },
+  { token: "--color-info-border", hex: "#89a6be", usage: "Info/notice borders" },
+];
+
+const defaultColorTokenValues: ColorTokenValues = Object.fromEntries(
+  colorTokenUsageMap.map((entry) => [entry.token, entry.hex]),
+) as ColorTokenValues;
+
 function walkNodes(node: SemanticNode, visit: (node: SemanticNode) => void): void {
   visit(node);
   if (Array.isArray(node.children)) {
@@ -48,7 +150,38 @@ function toScreenId(value: string): string {
 }
 
 function App() {
-  const [mode, setMode] = useState<"flow" | "matrix" | "authoring">("matrix");
+  const typedTypographyRoleMap = typographyRoleMap as TypographyRoleMap;
+  const typedTypographyAllocationMatrix = typographyAllocationMatrix as TypographyAllocationMatrix;
+  const contractBaseFontFamily = typedTypographyRoleMap.base_font_family?.trim() || "Inter, Avenir, Helvetica, Arial, sans-serif";
+  const [mode, setMode] = useState<"flow" | "matrix" | "authoring" | "typography" | "typography_mapping">("matrix");
+  const [selectedFontFamily, setSelectedFontFamily] = useState<string>(() => {
+    if (typeof window === "undefined") {
+      return contractBaseFontFamily;
+    }
+
+    const savedFontFamily = window.localStorage.getItem("wf-font-family");
+    return savedFontFamily && savedFontFamily.trim().length > 0 ? savedFontFamily : contractBaseFontFamily;
+  });
+  const [colorTokenValues, setColorTokenValues] = useState<ColorTokenValues>(() => {
+    if (typeof window === "undefined") {
+      return defaultColorTokenValues;
+    }
+
+    const savedValue = window.localStorage.getItem("wf-color-token-overrides");
+    if (!savedValue) {
+      return defaultColorTokenValues;
+    }
+
+    try {
+      const parsedValue = JSON.parse(savedValue) as ColorTokenValues;
+      return {
+        ...defaultColorTokenValues,
+        ...parsedValue,
+      };
+    } catch {
+      return defaultColorTokenValues;
+    }
+  });
   const [matrixFilter, setMatrixFilter] = useState<"default" | "all">("default");
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeSubcategory, setActiveSubcategory] = useState<string>("all");
@@ -204,6 +337,46 @@ function App() {
         .filter((entry) => entry.missingStates.length > 0),
     [],
   );
+
+  useEffect(() => {
+    document.documentElement.style.setProperty("--font-family-base", selectedFontFamily);
+    window.localStorage.setItem("wf-font-family", selectedFontFamily);
+  }, [selectedFontFamily]);
+
+  useEffect(() => {
+    window.localStorage.setItem("wf-color-token-overrides", JSON.stringify(colorTokenValues));
+  }, [colorTokenValues]);
+
+  const semanticColorStyle = useMemo(
+    () =>
+      Object.fromEntries(Object.entries(colorTokenValues).map(([token, value]) => [token, value])) as CSSProperties,
+    [colorTokenValues],
+  );
+
+  const fontFamilyOptions = useMemo(() => {
+    const baseOptions: FontFamilyOption[] = [
+      { label: "Contract Default", value: contractBaseFontFamily },
+      { label: "Editorial Serif", value: "Georgia, 'Times New Roman', Times, serif" },
+      { label: "Classic Sans", value: "'Trebuchet MS', 'Gill Sans', 'Segoe UI', sans-serif" },
+      { label: "Code Sans", value: "'IBM Plex Sans', 'Segoe UI', sans-serif" },
+      { label: "Humanist", value: "Optima, Candara, 'Noto Sans', sans-serif" },
+      { label: "Monospace", value: "'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace" },
+    ];
+
+    const optionsByValue = new Map<string, FontFamilyOption>();
+    for (const option of baseOptions) {
+      optionsByValue.set(option.value, option);
+    }
+
+    if (!optionsByValue.has(selectedFontFamily)) {
+      optionsByValue.set(selectedFontFamily, {
+        label: "Saved Custom",
+        value: selectedFontFamily,
+      });
+    }
+
+    return Array.from(optionsByValue.values());
+  }, [contractBaseFontFamily, selectedFontFamily]);
   const mismatchBySemanticId = useMemo(
     () =>
       Object.fromEntries(coverageMismatches.map((entry) => [entry.semanticId, entry.missingStates])) as Record<
@@ -278,6 +451,54 @@ function App() {
     [activeSubcategory, visibleMatrixGroups],
   );
 
+  const typographyRows = useMemo(
+    () =>
+      typographyRoleOrder.map((role) => ({
+        role,
+        desktop: typedTypographyRoleMap.roles[role].desktop,
+        mobile: typedTypographyRoleMap.roles[role].mobile,
+      })),
+    [typedTypographyRoleMap],
+  );
+
+  const typographyMappingRows = useMemo(
+    () =>
+      Object.entries(typedTypographyAllocationMatrix.allocations)
+        .map(([semanticId, allocation]) => ({
+          semanticId,
+          componentDefault: allocation.component_default,
+          titleRole: allocation.title_role,
+          slotsSummary: Object.entries(allocation.slots)
+            .map(([slot, role]) => `${slot}: ${role}`)
+            .join(", "),
+        }))
+        .sort((a, b) => a.semanticId.localeCompare(b.semanticId)),
+    [typedTypographyAllocationMatrix],
+  );
+
+  const typographyRoleUsage = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const allocation of Object.values(typedTypographyAllocationMatrix.allocations)) {
+      counts[allocation.component_default] = (counts[allocation.component_default] || 0) + 1;
+      counts[allocation.title_role] = (counts[allocation.title_role] || 0) + 1;
+      for (const slotRole of Object.values(allocation.slots)) {
+        counts[slotRole] = (counts[slotRole] || 0) + 1;
+      }
+    }
+
+    return typographyRoleOrder
+      .map((role) => ({ role, count: counts[role] || 0 }))
+      .filter((entry) => entry.count > 0);
+  }, [typedTypographyAllocationMatrix]);
+
+  function typographyStyle(value: TypographyRoleValue): CSSProperties {
+    return {
+      fontSize: `${value.font_size_px}px`,
+      lineHeight: `${value.line_height_px}px`,
+      fontWeight: value.font_weight,
+    };
+  }
+
 
   return (
     <main className="wf-app">
@@ -289,17 +510,31 @@ function App() {
       <section className="wf-mode-toggle" aria-label="View mode">
         <button
           type="button"
+          className={mode === "matrix" ? "wf-toggle is-active" : "wf-toggle"}
+          onClick={() => setMode("matrix")}
+        >
+          Components
+        </button>
+        <button
+          type="button"
+          className={mode === "typography" ? "wf-toggle is-active" : "wf-toggle"}
+          onClick={() => setMode("typography")}
+        >
+          Typography Preview
+        </button>
+        <button
+          type="button"
+          className={mode === "typography_mapping" ? "wf-toggle is-active" : "wf-toggle"}
+          onClick={() => setMode("typography_mapping")}
+        >
+          Mapping
+        </button>
+        <button
+          type="button"
           className={mode === "flow" ? "wf-toggle is-active" : "wf-toggle"}
           onClick={() => setMode("flow")}
         >
           Flow Preview
-        </button>
-        <button
-          type="button"
-          className={mode === "matrix" ? "wf-toggle is-active" : "wf-toggle"}
-          onClick={() => setMode("matrix")}
-        >
-          State Matrix
         </button>
         <button
           type="button"
@@ -308,6 +543,87 @@ function App() {
         >
           Workflow Composer
         </button>
+      </section>
+
+      <section className="wf-global-controls" aria-label="Global style controls">
+        <article className="wf-font-family-control" aria-label="Global typography settings">
+          <label className="wf-field">
+            <span>Global Font Family</span>
+            <select
+              className="wf-input"
+              value={selectedFontFamily}
+              onChange={(event) => setSelectedFontFamily(event.target.value)}
+            >
+              {fontFamilyOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <p className="wf-status-text">
+            Applies globally via --font-family-base. Every rendered component and preview inherits this selection.
+          </p>
+          <p className="wf-font-preview" style={{ fontFamily: selectedFontFamily }}>
+            Aa Bb Cc 0123 The quick brown fox jumps over the lazy dog.
+          </p>
+        </article>
+
+        <article className="wf-color-map-panel" aria-label="Global color token mapping">
+          <header className="wf-color-map-header">
+            <h2 className="wf-section-title">Color Mapping</h2>
+            <button
+              type="button"
+              className="wf-button wf-button-secondary wf-button-small"
+              onClick={() => setColorTokenValues(defaultColorTokenValues)}
+            >
+              Reset to Default
+            </button>
+          </header>
+          <p className="wf-status-text">Token to hex and usage in your current library UI.</p>
+          <div className="wf-color-map-list">
+            {colorTokenUsageMap.map((entry) => (
+              <div className="wf-color-map-row" key={entry.token}>
+                <span className="wf-color-swatch" style={{ background: colorTokenValues[entry.token] }} aria-hidden="true" />
+                <div className="wf-color-map-meta">
+                  <strong>{entry.displayName || entry.token}</strong>
+                  <small className="wf-status-text">
+                    {entry.token} • {colorTokenValues[entry.token]} • {entry.usage}
+                  </small>
+                </div>
+                <div className="wf-color-map-controls">
+                  <input
+                    className="wf-color-input"
+                    type="color"
+                    value={colorTokenValues[entry.token]}
+                    onChange={(event) =>
+                      setColorTokenValues((prev) => ({
+                        ...prev,
+                        [entry.token]: event.target.value,
+                      }))
+                    }
+                    aria-label={`Set ${entry.token}`}
+                  />
+                  <button
+                    type="button"
+                    className="wf-icon-button"
+                    onClick={() =>
+                      setColorTokenValues((prev) => ({
+                        ...prev,
+                        [entry.token]: defaultColorTokenValues[entry.token],
+                      }))
+                    }
+                    disabled={colorTokenValues[entry.token] === defaultColorTokenValues[entry.token]}
+                    title={`Reset ${entry.token}`}
+                    aria-label={`Reset ${entry.token}`}
+                  >
+                    ↺
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </article>
       </section>
 
       <section
@@ -347,12 +663,131 @@ function App() {
       ) : mode === "flow" ? (
         <section className="wf-canvas">
           <h2 className="wf-section-title">Flow: onboarding.account_setup</h2>
-          <NodeRenderer node={starterFlow.root} />
+          <div className="wf-semantic-scope" style={semanticColorStyle}>
+            <NodeRenderer node={starterFlow.root} />
+          </div>
+        </section>
+      ) : mode === "typography" ? (
+        <section className="wf-canvas">
+          <div className="wf-typography-preview" aria-label="Typography role preview">
+            <div className="wf-typography-header">
+              <h2 className="wf-section-title">Typography Role Preview</h2>
+              <p>
+                Desktop and mobile mappings from typography-role-map.json. Mobile breakpoint: {typedTypographyRoleMap.mobile_breakpoint_px}px.
+              </p>
+            </div>
+            <div className="wf-typography-grid">
+              {typographyRows.map(({ role, desktop, mobile }) => (
+                <article className="wf-typography-row" key={role}>
+                  <header className="wf-typography-row-header">
+                    <strong>{role}</strong>
+                  </header>
+                  <div className="wf-typography-columns">
+                    <section>
+                      <div className="wf-matrix-label">Desktop</div>
+                      <p style={typographyStyle(desktop)}>The quick brown fox jumps over the lazy dog.</p>
+                      <small className="wf-status-text">
+                        {desktop.font_size_px}px / {desktop.line_height_px}px / {desktop.font_weight}
+                      </small>
+                    </section>
+                    <section>
+                      <div className="wf-matrix-label">Mobile</div>
+                      <p style={typographyStyle(mobile)}>The quick brown fox jumps over the lazy dog.</p>
+                      <small className="wf-status-text">
+                        {mobile.font_size_px}px / {mobile.line_height_px}px / {mobile.font_weight}
+                      </small>
+                    </section>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : mode === "typography_mapping" ? (
+        <section className="wf-canvas">
+          <div className="wf-typography-preview" aria-label="Typography mapping overview">
+            <div className="wf-typography-header">
+              <h2 className="wf-section-title">Mapping</h2>
+              <p>
+                Source of truth: role map to CSS token layer and component allocation matrix.
+              </p>
+            </div>
+
+            <article className="wf-typography-row">
+              <header className="wf-typography-row-header">
+                <strong>Role Map / CSS Token Layer</strong>
+              </header>
+              <p className="wf-status-text">
+                Active base font family: {selectedFontFamily}. Contract default: {typedTypographyRoleMap.base_font_family || "n/a"}. Mobile breakpoint: {typedTypographyRoleMap.mobile_breakpoint_px}px.
+              </p>
+              <div className="wf-typography-columns">
+                <section>
+                  <div className="wf-matrix-label">Desktop Tokens</div>
+                  <ul className="wf-list">
+                    {typographyRows.map(({ role, desktop }) => (
+                      <li key={`desktop-${role}`}>
+                        <strong>{role}</strong>
+                        {" -> "}
+                        --type-{role.replace("_", "-")}-size: {desktop.font_size_px}px, --type-{role.replace("_", "-")}-line: {desktop.line_height_px}px, --type-{role.replace("_", "-")}-weight: {desktop.font_weight}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+                <section>
+                  <div className="wf-matrix-label">Mobile Tokens</div>
+                  <ul className="wf-list">
+                    {typographyRows.map(({ role, mobile }) => (
+                      <li key={`mobile-${role}`}>
+                        <strong>{role}</strong>
+                        {" -> "}
+                        {mobile.font_size_px}px / {mobile.line_height_px}px / {mobile.font_weight}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
+            </article>
+
+            <article className="wf-typography-row">
+              <header className="wf-typography-row-header">
+                <strong>Role Usage Summary</strong>
+              </header>
+              <div className="wf-matrix-grid">
+                {typographyRoleUsage.map((entry) => (
+                  <div className="wf-matrix-cell" key={entry.role}>
+                    <div className="wf-matrix-label">{entry.role}</div>
+                    <strong>{entry.count}</strong>
+                    <small className="wf-status-text">allocations</small>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="wf-typography-row">
+              <header className="wf-typography-row-header">
+                <strong>Components Mapping Overview</strong>
+              </header>
+              <p className="wf-status-text">
+                Default component role: {typedTypographyAllocationMatrix.default_component_role}. Total mapped components: {typographyMappingRows.length}.
+              </p>
+              <div className="wf-authoring-json">
+                {typographyMappingRows.map((row) => (
+                  <div key={row.semanticId}>
+                    <strong>{row.semanticId}</strong>
+                    <div>component_default: {row.componentDefault}</div>
+                    <div>title_role: {row.titleRole}</div>
+                    <div>slots: {row.slotsSummary || "n/a"}</div>
+                    <hr />
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
         </section>
       ) : mode === "matrix" ? (
         <section className="wf-canvas">
           <div className="wf-matrix-toolbar">
-            <h2 className="wf-section-title">State Matrix</h2>
+            <h2 className="wf-section-title">Components</h2>
             <div className="wf-matrix-filters" role="group" aria-label="State matrix filter">
               <button
                 type="button"
@@ -442,7 +877,9 @@ function App() {
                             {states.map(({ state, node }) => (
                               <div className="wf-matrix-cell" key={`${component.semantic_id}-${state}`}>
                                 <div className="wf-matrix-label">{state}</div>
-                                <NodeRenderer node={node} />
+                                <div className="wf-semantic-scope" style={semanticColorStyle}>
+                                  <NodeRenderer node={node} />
+                                </div>
                               </div>
                             ))}
                           </div>
@@ -586,7 +1023,9 @@ function App() {
             <div className="wf-authoring-preview">
               <article>
                 <h3>Live Screen Preview</h3>
-                <NodeRenderer node={authoredScreen.root} />
+                <div className="wf-semantic-scope" style={semanticColorStyle}>
+                  <NodeRenderer node={authoredScreen.root} />
+                </div>
               </article>
               <article>
                 <h3>Serialized Screen JSON</h3>

@@ -11,6 +11,8 @@ const authoredScreensDirPath = path.resolve(root, "../semantic-contract/catalog/
 const componentSchemaPath = path.resolve(root, "../semantic-contract/schema/semantic-component.schema.json");
 const screenSchemaPath = path.resolve(root, "../semantic-contract/schema/screen-instance.schema.json");
 const contractVersionPath = path.resolve(root, "../semantic-contract/contract-version.json");
+const typographyRoleMapPath = path.resolve(root, "../semantic-contract/catalog/typography-role-map.json");
+const typographyAllocationPath = path.resolve(root, "../semantic-contract/catalog/typography-allocation.matrix.json");
 const rendererPath = path.resolve(root, "src/semantic/renderer.tsx");
 const stateCoveragePath = path.resolve(root, "src/semantic/renderer-state-coverage.json");
 const mappingDirPath = path.resolve(root, "../mapping");
@@ -108,6 +110,8 @@ async function main() {
     componentSchemaRaw,
     screenSchemaRaw,
     contractVersionRaw,
+    typographyRoleMapRaw,
+    typographyAllocationRaw,
     rendererSource,
     stateCoverageRaw,
     adapterSchemaRaw,
@@ -119,6 +123,8 @@ async function main() {
     readFile(componentSchemaPath, "utf8"),
     readFile(screenSchemaPath, "utf8"),
     readFile(contractVersionPath, "utf8"),
+    readFile(typographyRoleMapPath, "utf8"),
+    readFile(typographyAllocationPath, "utf8"),
     readFile(rendererPath, "utf8"),
     readFile(stateCoveragePath, "utf8"),
     readFile(adapterSchemaPath, "utf8"),
@@ -131,6 +137,8 @@ async function main() {
   const componentSchema = JSON.parse(componentSchemaRaw);
   const screenSchema = JSON.parse(screenSchemaRaw);
   const contractVersion = JSON.parse(contractVersionRaw);
+  const typographyRoleMap = JSON.parse(typographyRoleMapRaw);
+  const typographyAllocation = JSON.parse(typographyAllocationRaw);
   const stateCoverage = JSON.parse(stateCoverageRaw);
   const adapterSchema = JSON.parse(adapterSchemaRaw);
   const adapterCompatibility = JSON.parse(adapterCompatibilityRaw);
@@ -156,6 +164,7 @@ async function main() {
   const versioningIssues = [];
   const categoryGapWarnings = [];
   const authoredScreenIssues = [];
+  const typographyIssues = [];
 
   const ajv = new Ajv2020({ allErrors: true, strict: false });
   const validateComponent = ajv.compile(componentSchema);
@@ -172,6 +181,15 @@ async function main() {
 
   if (!isObject(adapterCompatibility) || !isObject(adapterCompatibility.adapters)) {
     versioningIssues.push("adapter-compatibility.matrix.json must define adapters map");
+  }
+
+  const validTypographyRoles = new Set(Object.keys(typographyRoleMap.roles || {}));
+  const allocationBySemanticId = isObject(typographyAllocation.allocations)
+    ? typographyAllocation.allocations
+    : {};
+
+  if (typeof typographyAllocation.default_component_role !== "string" || !validTypographyRoles.has(typographyAllocation.default_component_role)) {
+    typographyIssues.push("typography-allocation.matrix.json must define a valid default_component_role");
   }
 
   for (const component of catalog) {
@@ -216,6 +234,34 @@ async function main() {
 
     if (!component.i18n || typeof component.i18n.text_direction !== "string") {
       contractIssues.push(`${component.semantic_id} must define i18n.text_direction`);
+    }
+
+    const allocation = allocationBySemanticId[component.semantic_id];
+    if (!isObject(allocation)) {
+      typographyIssues.push(`${component.semantic_id} missing typography allocation entry`);
+    } else {
+      if (typeof allocation.component_default !== "string" || !validTypographyRoles.has(allocation.component_default)) {
+        typographyIssues.push(`${component.semantic_id} has invalid component_default typography role`);
+      }
+
+      if (typeof allocation.title_role !== "string" || !validTypographyRoles.has(allocation.title_role)) {
+        typographyIssues.push(`${component.semantic_id} has invalid title_role typography role`);
+      }
+
+      if (!isObject(allocation.slots)) {
+        typographyIssues.push(`${component.semantic_id} must define typography slot allocations`);
+      } else {
+        for (const [slotName, slotDefinition] of Object.entries(component.slots)) {
+          if (slotDefinition.type !== "text" && slotDefinition.type !== "meta") {
+            continue;
+          }
+
+          const role = allocation.slots[slotName];
+          if (typeof role !== "string" || !validTypographyRoles.has(role)) {
+            typographyIssues.push(`${component.semantic_id}.${slotName} has invalid typography role allocation`);
+          }
+        }
+      }
     }
 
     const caseBlock = getCaseBlock(rendererSource, component.semantic_id);
@@ -397,6 +443,7 @@ async function main() {
   summarize("Schema validation", schemaIssues);
   summarize("Adapter contract coverage", adapterIssues);
   summarize("Version compatibility", versioningIssues);
+  summarize("Typography allocation", typographyIssues);
   summarize("Category gap warnings", categoryGapWarnings);
   summarize("Starter flow compatibility", flowIssues);
   summarize("Authored screens compatibility", authoredScreenIssues);
@@ -408,6 +455,7 @@ async function main() {
     schemaIssues.length +
     adapterIssues.length +
     versioningIssues.length +
+    typographyIssues.length +
     flowIssues.length +
     authoredScreenIssues.length;
 

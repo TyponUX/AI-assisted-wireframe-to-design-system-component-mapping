@@ -1,0 +1,51 @@
+{
+  "name": "semantic_typography_role_map",
+  "version": "1.0.0",
+  "description": "Design-system typography roles with desktop and mobile values.",
+  "base_font_family": "IBM Plex Sans, Segoe UI, sans-serif",
+  "mobile_breakpoint_px": 768,
+  "weights": {
+    "regular": 400,
+    "medium": 500,
+    "semibold": 600,
+    "bold": 700
+  },
+  "roles": {
+    "display": {
+      "desktop": { "font_size_px": 40, "line_height_px": 48, "font_weight": 700 },
+      "mobile": { "font_size_px": 32, "line_height_px": 40, "font_weight": 700 }
+    },
+    "heading_l": {
+      "desktop": { "font_size_px": 32, "line_height_px": 40, "font_weight": 700 },
+      "mobile": { "font_size_px": 28, "line_height_px": 36, "font_weight": 700 }
+    },
+    "heading_m": {
+      "desktop": { "font_size_px": 24, "line_height_px": 32, "font_weight": 600 },
+      "mobile": { "font_size_px": 22, "line_height_px": 30, "font_weight": 600 }
+    },
+    "heading_s": {
+      "desktop": { "font_size_px": 20, "line_height_px": 28, "font_weight": 600 },
+      "mobile": { "font_size_px": 18, "line_height_px": 26, "font_weight": 600 }
+    },
+    "body_l": {
+      "desktop": { "font_size_px": 18, "line_height_px": 28, "font_weight": 400 },
+      "mobile": { "font_size_px": 18, "line_height_px": 28, "font_weight": 400 }
+    },
+    "body_m": {
+      "desktop": { "font_size_px": 16, "line_height_px": 24, "font_weight": 400 },
+      "mobile": { "font_size_px": 16, "line_height_px": 24, "font_weight": 400 }
+    },
+    "body_s": {
+      "desktop": { "font_size_px": 14, "line_height_px": 20, "font_weight": 400 },
+      "mobile": { "font_size_px": 14, "line_height_px": 20, "font_weight": 400 }
+    },
+    "label": {
+      "desktop": { "font_size_px": 14, "line_height_px": 20, "font_weight": 500 },
+      "mobile": { "font_size_px": 14, "line_height_px": 20, "font_weight": 500 }
+    },
+    "caption": {
+      "desktop": { "font_size_px": 12, "line_height_px": 16, "font_weight": 400 },
+      "mobile": { "font_size_px": 12, "line_height_px": 16, "font_weight": 400 }
+    }
+  }
+}

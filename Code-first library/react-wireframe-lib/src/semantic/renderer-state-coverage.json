@@ -1,41 +1,378 @@
 {
-  "layout.page_shell": ["default"],
-  "layout.section": ["default", "collapsed"],
-  "layout.stack": ["default", "compact"],
-  "layout.inline": ["default", "wrap"],
-  "navigation.top_nav": ["default"],
-  "navigation.side_nav": ["default", "collapsed"],
-  "navigation.tabs": ["default"],
-  "navigation.breadcrumb": ["default"],
-  "navigation.pagination": ["default", "disabled"],
-  "input.text_field": ["default", "focused", "error", "disabled"],
-  "input.select": ["default", "open", "error", "disabled"],
-  "input.checkbox": ["unchecked", "checked", "disabled"],
-  "input.text_area": ["default", "focused", "error", "disabled"],
-  "input.radio_group": ["default", "error", "disabled"],
-  "input.toggle_switch": ["off", "on", "disabled"],
-  "input.search_field": ["default", "focused", "disabled"],
-  "input.date_input": ["default", "focused", "error", "disabled"],
-  "input.file_input": ["default", "selected", "error", "disabled"],
-  "action.button_primary": ["default", "loading", "disabled"],
-  "action.button_secondary": ["default", "disabled"],
-  "action.icon_button": ["default", "disabled"],
-  "action.menu_item": ["default", "disabled"],
-  "data.card": ["default", "loading", "empty"],
-  "data.table": ["default", "loading", "empty", "error"],
-  "data.list": ["default", "loading", "empty", "error"],
-  "data.badge": ["neutral", "success", "warning", "error"],
-  "data.key_value_list": ["default", "empty"],
-  "feedback.alert": ["info", "success", "warning", "error"],
-  "feedback.empty_state": ["default"],
-  "feedback.inline_error": ["default"],
-  "feedback.loading_indicator": ["default"],
-  "feedback.progress_bar": ["default", "indeterminate", "complete"],
-  "feedback.toast": ["info", "success", "warning", "error"],
-  "overlay.modal": ["open", "closed"],
-  "overlay.tooltip": ["hidden", "visible"],
-  "overlay.popover": ["open", "closed"],
-  "overlay.context_menu": ["open", "closed"],
-  "overlay.drawer": ["open", "closed"],
-  "flow.stepper": ["default"]
+  "layout.page_shell": [
+    "default"
+  ],
+  "layout.section": [
+    "default",
+    "collapsed"
+  ],
+  "layout.stack": [
+    "default",
+    "compact"
+  ],
+  "layout.inline": [
+    "default",
+    "wrap"
+  ],
+  "navigation.top_nav": [
+    "default"
+  ],
+  "navigation.side_nav": [
+    "default",
+    "collapsed"
+  ],
+  "navigation.tabs": [
+    "default"
+  ],
+  "navigation.breadcrumb": [
+    "default"
+  ],
+  "navigation.pagination": [
+    "default",
+    "disabled"
+  ],
+  "input.text_field": [
+    "default",
+    "focused",
+    "error",
+    "disabled"
+  ],
+  "input.select": [
+    "default",
+    "open",
+    "error",
+    "disabled"
+  ],
+  "input.checkbox": [
+    "unchecked",
+    "checked",
+    "disabled"
+  ],
+  "input.text_area": [
+    "default",
+    "focused",
+    "error",
+    "disabled"
+  ],
+  "input.radio_group": [
+    "default",
+    "error",
+    "disabled"
+  ],
+  "input.toggle_switch": [
+    "off",
+    "on",
+    "disabled"
+  ],
+  "input.search_field": [
+    "default",
+    "focused",
+    "disabled"
+  ],
+  "input.date_input": [
+    "default",
+    "focused",
+    "error",
+    "disabled"
+  ],
+  "input.file_input": [
+    "default",
+    "selected",
+    "error",
+    "disabled"
+  ],
+  "action.button_primary": [
+    "default",
+    "loading",
+    "disabled"
+  ],
+  "action.button_secondary": [
+    "default",
+    "disabled"
+  ],
+  "action.icon_button": [
+    "default",
+    "disabled"
+  ],
+  "action.menu_item": [
+    "default",
+    "disabled"
+  ],
+  "data.card": [
+    "default",
+    "loading",
+    "empty"
+  ],
+  "data.metric": [
+    "default",
+    "loading",
+    "empty"
+  ],
+  "data.metric_tile": [
+    "default",
+    "loading",
+    "empty"
+  ],
+  "data.chart_bar": [
+    "default",
+    "loading",
+    "empty",
+    "error"
+  ],
+  "data.chart_donut": [
+    "default",
+    "loading",
+    "empty",
+    "error"
+  ],
+  "data.trend_indicator": [
+    "neutral",
+    "up",
+    "down"
+  ],
+  "data.table": [
+    "default",
+    "loading",
+    "empty",
+    "error"
+  ],
+  "data.list": [
+    "default",
+    "loading",
+    "empty",
+    "error"
+  ],
+  "data.badge": [
+    "neutral",
+    "success",
+    "warning",
+    "error"
+  ],
+  "data.key_value_list": [
+    "default",
+    "empty"
+  ],
+  "feedback.alert": [
+    "info",
+    "success",
+    "warning",
+    "error"
+  ],
+  "feedback.empty_state": [
+    "default"
+  ],
+  "feedback.inline_error": [
+    "default"
+  ],
+  "feedback.loading_indicator": [
+    "default"
+  ],
+  "feedback.progress_bar": [
+    "default",
+    "indeterminate",
+    "complete"
+  ],
+  "feedback.toast": [
+    "info",
+    "success",
+    "warning",
+    "error"
+  ],
+  "overlay.modal": [
+    "open",
+    "closed"
+  ],
+  "overlay.tooltip": [
+    "hidden",
+    "visible"
+  ],
+  "overlay.popover": [
+    "open",
+    "closed"
+  ],
+  "overlay.context_menu": [
+    "open",
+    "closed"
+  ],
+  "overlay.drawer": [
+    "open",
+    "closed"
+  ],
+  "flow.stepper": [
+    "default"
+  ],
+  "action.float_button": [
+    "default",
+    "disabled"
+  ],
+  "layout.divider": [
+    "default"
+  ],
+  "layout.grid": [
+    "default",
+    "compact"
+  ],
+  "layout.masonry": [
+    "default",
+    "compact"
+  ],
+  "layout.splitter": [
+    "default"
+  ],
+  "layout.affix": [
+    "default",
+    "stuck"
+  ],
+  "layout.border_beam": [
+    "default",
+    "active"
+  ],
+  "navigation.anchor": [
+    "default"
+  ],
+  "navigation.menu": [
+    "default",
+    "collapsed"
+  ],
+  "overlay.dropdown": [
+    "open",
+    "closed"
+  ],
+  "overlay.tour": [
+    "open",
+    "closed"
+  ],
+  "overlay.popconfirm": [
+    "open",
+    "closed"
+  ],
+  "input.autocomplete": [
+    "default",
+    "focused",
+    "open",
+    "disabled"
+  ],
+  "input.cascader": [
+    "default",
+    "open",
+    "disabled"
+  ],
+  "input.color_picker": [
+    "default",
+    "open",
+    "disabled"
+  ],
+  "input.form": [
+    "default",
+    "submitting",
+    "disabled"
+  ],
+  "input.number_input": [
+    "default",
+    "focused",
+    "error",
+    "disabled"
+  ],
+  "input.mentions": [
+    "default",
+    "focused",
+    "disabled"
+  ],
+  "input.rate": [
+    "default",
+    "disabled"
+  ],
+  "input.slider": [
+    "default",
+    "disabled"
+  ],
+  "input.time_input": [
+    "default",
+    "focused",
+    "error",
+    "disabled"
+  ],
+  "input.transfer": [
+    "default",
+    "disabled"
+  ],
+  "input.tree_select": [
+    "default",
+    "open",
+    "disabled"
+  ],
+  "input.segmented_control": [
+    "default",
+    "disabled"
+  ],
+  "data.avatar": [
+    "default",
+    "fallback"
+  ],
+  "data.calendar": [
+    "default",
+    "empty"
+  ],
+  "data.carousel": [
+    "default"
+  ],
+  "data.image": [
+    "default",
+    "loading",
+    "error"
+  ],
+  "data.qr_code": [
+    "default"
+  ],
+  "data.icon": [
+    "default"
+  ],
+  "data.typography": [
+    "default"
+  ],
+  "data.timeline": [
+    "default",
+    "empty"
+  ],
+  "data.tree": [
+    "default",
+    "empty"
+  ],
+  "data.collapse": [
+    "default",
+    "collapsed"
+  ],
+  "feedback.result": [
+    "success",
+    "error",
+    "warning",
+    "info"
+  ],
+  "feedback.skeleton": [
+    "default"
+  ],
+  "feedback.notification": [
+    "info",
+    "success",
+    "warning",
+    "error"
+  ],
+  "feedback.message": [
+    "info",
+    "success",
+    "warning",
+    "error"
+  ],
+  "feedback.watermark": [
+    "default"
+  ],
+  "flow.app_context": [
+    "default"
+  ],
+  "flow.config_provider": [
+    "default"
+  ],
+  "flow.utility": [
+    "default"
+  ]
 }

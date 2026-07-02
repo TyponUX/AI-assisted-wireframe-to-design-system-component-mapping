@@ -23,6 +23,60 @@ function readStringArray(props: Record<string, unknown>, key: string): string[] 
   return value.filter((item): item is string => typeof item === "string");
 }
 
+function readMetricValue(props: Record<string, unknown>, key: string, fallback = "-"): string {
+  const value = props[key];
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return String(value);
+  }
+
+  return typeof value === "string" && value.length > 0 ? value : fallback;
+}
+
+type SeriesEntry = {
+  label: string;
+  value: number;
+};
+
+function readSeriesEntries(props: Record<string, unknown>, key: string): SeriesEntry[] {
+  const value = props[key];
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item): SeriesEntry | null => {
+      if (typeof item === "string") {
+        const [labelPart, valuePart] = item.split(":");
+        const parsedValue = Number((valuePart || "").trim());
+        if (!labelPart || !Number.isFinite(parsedValue)) {
+          return null;
+        }
+
+        return { label: labelPart.trim(), value: parsedValue };
+      }
+
+      if (typeof item === "object" && item !== null) {
+        const maybeLabel = (item as { label?: unknown }).label;
+        const maybeValue = (item as { value?: unknown }).value;
+        if (typeof maybeLabel === "string" && typeof maybeValue === "number" && Number.isFinite(maybeValue)) {
+          return { label: maybeLabel, value: maybeValue };
+        }
+      }
+
+      return null;
+    })
+    .filter((item): item is SeriesEntry => item !== null);
+}
+
+function GenericSemanticBlock({ node, title }: { node: SemanticNode; title: string }) {
+  return (
+    <Frame title={title} state={node.state}>
+      <pre>{JSON.stringify(node.props, null, 2)}</pre>
+      {renderChildren(node)}
+    </Frame>
+  );
+}
+
 function StatusPill({ state }: { state: string }) {
   return <span className="wf-state-pill">{state}</span>;
 }
@@ -358,6 +412,126 @@ function renderNode(node: SemanticNode): ReactNode {
         </article>
       );
 
+    case "data.metric":
+    case "data.metric_tile": {
+      const label = readText(node.props, "label", "Metric");
+      const value = readMetricValue(node.props, "value");
+      const context = readText(node.props, "context");
+      const trend = readMetricValue(node.props, "trend", "");
+
+      if (node.state === "loading") {
+        return (
+          <article className="wf-card is-loading">
+            <strong>{label}</strong>
+            <p className="wf-status-text">Loading metric...</p>
+          </article>
+        );
+      }
+
+      if (node.state === "empty") {
+        return (
+          <article className="wf-card is-empty">
+            <strong>{label}</strong>
+            <p className="wf-status-text">No metric data available.</p>
+          </article>
+        );
+      }
+
+      return (
+        <article className="wf-card">
+          <small className="wf-status-text">{label}</small>
+          <strong>{value}</strong>
+          {context ? <p>{context}</p> : null}
+          {trend ? <small className="wf-status-text">Trend: {trend}</small> : null}
+        </article>
+      );
+    }
+
+    case "data.chart_bar": {
+      const title = readText(node.props, "title", "Bar Chart");
+      const entries = readSeriesEntries(node.props, "series");
+
+      if (node.state === "loading") {
+        return <div className="wf-table-wrap is-loading">Loading chart...</div>;
+      }
+
+      if (node.state === "empty") {
+        return <div className="wf-table-wrap is-empty">No chart data available.</div>;
+      }
+
+      if (node.state === "error") {
+        return <div className="wf-table-wrap is-error">Failed to load chart data.</div>;
+      }
+
+      const maxValue = Math.max(...entries.map((entry) => entry.value), 1);
+
+      return (
+        <section className="wf-card">
+          <strong>{title}</strong>
+          <div>
+            {entries.map((entry) => (
+              <div key={entry.label}>
+                <small>
+                  {entry.label}: {entry.value}
+                </small>
+                <div className="wf-progress-track">
+                  <div className="wf-progress-fill" style={{ width: `${(entry.value / maxValue) * 100}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    case "data.chart_donut": {
+      const title = readText(node.props, "title", "Donut Chart");
+      const entries = readSeriesEntries(node.props, "series");
+
+      if (node.state === "loading") {
+        return <div className="wf-table-wrap is-loading">Loading chart...</div>;
+      }
+
+      if (node.state === "empty") {
+        return <div className="wf-table-wrap is-empty">No chart data available.</div>;
+      }
+
+      if (node.state === "error") {
+        return <div className="wf-table-wrap is-error">Failed to load chart data.</div>;
+      }
+
+      const total = entries.reduce((sum, entry) => sum + entry.value, 0);
+
+      return (
+        <section className="wf-card">
+          <strong>{title}</strong>
+          <ul className="wf-list">
+            {entries.map((entry) => {
+              const percent = total > 0 ? Math.round((entry.value / total) * 100) : 0;
+              return (
+                <li key={entry.label}>
+                  {entry.label}: {entry.value} ({percent}%)
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      );
+    }
+
+    case "data.trend_indicator": {
+      const label = readText(node.props, "label", "Trend");
+      const value = readMetricValue(node.props, "value", "");
+      const direction = readMetricValue(node.props, "direction", node.state);
+
+      return (
+        <span className={`wf-badge ${stateClassName(node.state)}`}>
+          {label}: {direction}
+          {value ? ` (${value})` : ""}
+        </span>
+      );
+    }
+
     case "data.table":
       if (node.state === "loading") {
         return <div className="wf-table-wrap is-loading">Loading rows...</div>;
@@ -548,6 +722,239 @@ function renderNode(node: SemanticNode): ReactNode {
           {renderChildren(node)}
         </section>
       );
+
+    case "action.float_button":
+      return (
+        <button className="wf-button wf-button-primary" type="button" disabled={node.state === "disabled"}>
+          {readText(node.props, "icon", "+")} {readText(node.props, "label", "Float Action")}
+        </button>
+      );
+
+    case "layout.divider":
+      return (
+        <section>
+          {readText(node.props, "label") ? <small className="wf-status-text">{readText(node.props, "label")}</small> : null}
+          <hr />
+        </section>
+      );
+
+    case "layout.grid":
+      return (
+        <Frame title="Grid Layout" state={node.state}>
+          <div className={node.state === "compact" ? "wf-inline is-wrap" : "wf-inline"}>{renderChildren(node)}</div>
+        </Frame>
+      );
+
+    case "layout.masonry":
+      return (
+        <Frame title="Masonry Layout" state={node.state}>
+          <div className={node.state === "compact" ? "wf-inline is-wrap" : "wf-inline"}>{renderChildren(node)}</div>
+        </Frame>
+      );
+
+    case "layout.splitter":
+      return (
+        <Frame title="Splitter Layout" state={node.state}>
+          <div className="wf-inline">{renderChildren(node)}</div>
+        </Frame>
+      );
+
+    case "layout.affix":
+      return <GenericSemanticBlock node={node} title="Affix" />;
+
+    case "layout.border_beam":
+      return <GenericSemanticBlock node={node} title="Border Beam" />;
+
+    case "navigation.anchor":
+      return (
+        <Frame title="Anchor Navigation" state={node.state}>
+          <nav className="wf-nav">
+            {readStringArray(node.props, "items").map((item) => (
+              <span key={item} className={item === readText(node.props, "active_item") ? "wf-nav-item is-active" : "wf-nav-item"}>
+                {item}
+              </span>
+            ))}
+          </nav>
+        </Frame>
+      );
+
+    case "navigation.menu":
+      if (node.state === "collapsed") {
+        return <Frame title="Menu Navigation" state={node.state}><em className="wf-status-text">Menu collapsed</em></Frame>;
+      }
+      return (
+        <Frame title="Menu Navigation" state={node.state}>
+          <nav className="wf-side-nav">
+            {readStringArray(node.props, "items").map((item) => (
+              <span key={item} className={item === readText(node.props, "active_item") ? "wf-nav-item is-active" : "wf-nav-item"}>
+                {item}
+              </span>
+            ))}
+          </nav>
+        </Frame>
+      );
+
+    case "overlay.dropdown":
+      if (node.state === "closed") {
+        return <section className="wf-popover is-closed">Dropdown closed</section>;
+      }
+      return (
+        <section className="wf-popover">
+          <ul className="wf-list">
+            {readStringArray(node.props, "items").map((item, index) => (
+              <li key={`${item}-${index}`}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      );
+
+    case "overlay.tour":
+      if (node.state === "closed") {
+        return <section className="wf-popover is-closed">Tour closed</section>;
+      }
+      return (
+        <section className="wf-popover">
+          <strong>Guided Tour</strong>
+          <small className="wf-status-text">Step: {readMetricValue(node.props, "active_step", "1")}</small>
+        </section>
+      );
+
+    case "overlay.popconfirm":
+      if (node.state === "closed") {
+        return <section className="wf-popover is-closed">Confirmation closed</section>;
+      }
+      return (
+        <section className="wf-popover">
+          <strong>{readText(node.props, "title", "Are you sure?")}</strong>
+          <p>{readText(node.props, "message", "Please confirm this action")}</p>
+        </section>
+      );
+
+    case "input.autocomplete":
+      return (
+        <label className={`wf-field ${stateClassName(node.state)}`}>
+          <span>{readText(node.props, "label", "Autocomplete")}</span>
+          <input className="wf-input" defaultValue={readText(node.props, "value")} disabled={node.state === "disabled"} />
+          {node.state === "open" ? <small className="wf-select-note">Suggestions open</small> : null}
+        </label>
+      );
+
+    case "input.cascader":
+      return <GenericSemanticBlock node={node} title="Cascader" />;
+
+    case "input.color_picker":
+      return <GenericSemanticBlock node={node} title="Color Picker" />;
+
+    case "input.form":
+      return (
+        <Frame title={readText(node.props, "title", "Form")} state={node.state}>
+          {renderChildren(node)}
+        </Frame>
+      );
+
+    case "input.number_input":
+      return (
+        <label className={`wf-field ${stateClassName(node.state)}`}>
+          <span>{readText(node.props, "label", "Number")}</span>
+          <input className="wf-input" type="number" defaultValue={readMetricValue(node.props, "value", "0")} disabled={node.state === "disabled"} />
+        </label>
+      );
+
+    case "input.mentions":
+      return <GenericSemanticBlock node={node} title="Mentions" />;
+
+    case "input.rate":
+      return <GenericSemanticBlock node={node} title="Rate" />;
+
+    case "input.slider":
+      return (
+        <label className={`wf-field ${stateClassName(node.state)}`}>
+          <span>{readText(node.props, "label", "Slider")}</span>
+          <input className="wf-input" type="range" disabled={node.state === "disabled"} />
+        </label>
+      );
+
+    case "input.time_input":
+      return (
+        <label className={`wf-field ${stateClassName(node.state)}`}>
+          <span>{readText(node.props, "label", "Time")}</span>
+          <input className="wf-input" type="time" defaultValue={readText(node.props, "value")} disabled={node.state === "disabled"} />
+        </label>
+      );
+
+    case "input.transfer":
+      return <GenericSemanticBlock node={node} title="Transfer" />;
+
+    case "input.tree_select":
+      return <GenericSemanticBlock node={node} title="Tree Select" />;
+
+    case "input.segmented_control":
+      return <GenericSemanticBlock node={node} title="Segmented" />;
+
+    case "data.avatar":
+      return <span className="wf-badge">{readText(node.props, "label", "Avatar")}</span>;
+
+    case "data.calendar":
+      return <GenericSemanticBlock node={node} title="Calendar" />;
+
+    case "data.carousel":
+      return <GenericSemanticBlock node={node} title="Carousel" />;
+
+    case "data.image":
+      if (node.state === "loading") {
+        return <div className="wf-table-wrap is-loading">Loading image...</div>;
+      }
+      if (node.state === "error") {
+        return <div className="wf-table-wrap is-error">Image failed to load.</div>;
+      }
+      return <GenericSemanticBlock node={node} title="Image" />;
+
+    case "data.qr_code":
+      return <GenericSemanticBlock node={node} title="QR Code" />;
+
+    case "data.icon":
+      return <span className="wf-badge">{readText(node.props, "name", "icon")}</span>;
+
+    case "data.typography":
+      return <p>{readText(node.props, "text", "Typography sample text")}</p>;
+
+    case "data.timeline":
+      return <GenericSemanticBlock node={node} title="Timeline" />;
+
+    case "data.tree":
+      return <GenericSemanticBlock node={node} title="Tree" />;
+
+    case "data.collapse":
+      return <GenericSemanticBlock node={node} title="Collapse" />;
+
+    case "feedback.result":
+      return <aside className={`wf-alert ${stateClassName(node.state)}`}>{readText(node.props, "title", "Result")}</aside>;
+
+    case "feedback.skeleton":
+      return <p className="wf-status-text">Skeleton loading placeholder</p>;
+
+    case "feedback.notification":
+      return (
+        <aside className={`wf-toast ${stateClassName(node.state)}`}>
+          <strong>{readText(node.props, "title", "Notification")}</strong>
+          <p>{readText(node.props, "message", "Message")}</p>
+        </aside>
+      );
+
+    case "feedback.message":
+      return <aside className={`wf-alert ${stateClassName(node.state)}`}>{readText(node.props, "message", "Message")}</aside>;
+
+    case "feedback.watermark":
+      return <small className="wf-status-text">Watermark: {readText(node.props, "label", "Draft")}</small>;
+
+    case "flow.app_context":
+      return <GenericSemanticBlock node={node} title="App Context" />;
+
+    case "flow.config_provider":
+      return <GenericSemanticBlock node={node} title="Config Provider" />;
+
+    case "flow.utility":
+      return <GenericSemanticBlock node={node} title="Utility Wrapper" />;
 
     case "flow.stepper": {
       const steps = readStringArray(node.props, "steps");

@@ -858,6 +858,238 @@
       "confidence": 0.85
     },
     {
+      "source_semantic_id": "data.metric",
+      "target": {
+        "component": "MetricTile",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "meta_passthrough"
+        },
+        "context": {
+          "to": "context",
+          "transform": "direct"
+        },
+        "trend": {
+          "to": "trend",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "content"
+        },
+        "loading": {
+          "target_state": "skeleton",
+          "props": {
+            "loading": true
+          }
+        },
+        "empty": {
+          "target_state": "empty"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "MetricTile unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.85
+    },
+    {
+      "source_semantic_id": "data.metric_tile",
+      "target": {
+        "component": "MetricTile",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "meta_passthrough"
+        },
+        "context": {
+          "to": "context",
+          "transform": "direct"
+        },
+        "trend": {
+          "to": "trend",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "content"
+        },
+        "loading": {
+          "target_state": "skeleton",
+          "props": {
+            "loading": true
+          }
+        },
+        "empty": {
+          "target_state": "empty"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "MetricTile unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.85
+    },
+    {
+      "source_semantic_id": "data.chart_bar",
+      "target": {
+        "component": "BarChart",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "series": {
+          "to": "series",
+          "transform": "list_passthrough"
+        },
+        "legend": {
+          "to": "legend",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "loaded"
+        },
+        "loading": {
+          "target_state": "loading",
+          "props": {
+            "loading": true
+          }
+        },
+        "empty": {
+          "target_state": "empty"
+        },
+        "error": {
+          "target_state": "error",
+          "props": {
+            "showError": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Chart",
+        "reason": "BarChart unavailable"
+      },
+      "fallback_chain": [
+        "Chart"
+      ],
+      "confidence": 0.85
+    },
+    {
+      "source_semantic_id": "data.chart_donut",
+      "target": {
+        "component": "DonutChart",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "series": {
+          "to": "series",
+          "transform": "list_passthrough"
+        },
+        "total": {
+          "to": "total",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "loaded"
+        },
+        "loading": {
+          "target_state": "loading",
+          "props": {
+            "loading": true
+          }
+        },
+        "empty": {
+          "target_state": "empty"
+        },
+        "error": {
+          "target_state": "error",
+          "props": {
+            "showError": true
+          }
+        }
+      },
+      "fallback": {
+        "component": "Chart",
+        "reason": "DonutChart unavailable"
+      },
+      "fallback_chain": [
+        "Chart"
+      ],
+      "confidence": 0.85
+    },
+    {
+      "source_semantic_id": "data.trend_indicator",
+      "target": {
+        "component": "TrendIndicator",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "direction": {
+          "to": "direction",
+          "transform": "meta_passthrough"
+        },
+        "value": {
+          "to": "value",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "neutral": {
+          "target_state": "neutral"
+        },
+        "up": {
+          "target_state": "positive"
+        },
+        "down": {
+          "target_state": "negative"
+        }
+      },
+      "fallback": {
+        "component": "Badge",
+        "reason": "TrendIndicator unavailable"
+      },
+      "fallback_chain": [
+        "Badge"
+      ],
+      "confidence": 0.85
+    },
+    {
       "source_semantic_id": "data.table",
       "target": {
         "component": "DataTable",
@@ -1550,6 +1782,1410 @@
       ],
       "confidence": 0.85,
       "notes": "Baseline mapping for overlay.context_menu"
+    },
+    {
+      "source_semantic_id": "action.float_button",
+      "target": {
+        "component": "FloatButton",
+        "import": "@baseline/actions"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "icon": {
+          "to": "icon",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Button",
+        "reason": "FloatButton unavailable"
+      },
+      "fallback_chain": [
+        "Button"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "layout.divider",
+      "target": {
+        "component": "Divider",
+        "import": "@baseline/layout"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Panel",
+        "reason": "Divider unavailable"
+      },
+      "fallback_chain": [
+        "Panel"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "layout.grid",
+      "target": {
+        "component": "Grid",
+        "import": "@baseline/layout"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "compact": {
+          "target_state": "compact"
+        }
+      },
+      "fallback": {
+        "component": "Panel",
+        "reason": "Grid unavailable"
+      },
+      "fallback_chain": [
+        "Panel"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "layout.masonry",
+      "target": {
+        "component": "Masonry",
+        "import": "@baseline/layout"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "compact": {
+          "target_state": "compact"
+        }
+      },
+      "fallback": {
+        "component": "Panel",
+        "reason": "Masonry unavailable"
+      },
+      "fallback_chain": [
+        "Panel"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "layout.splitter",
+      "target": {
+        "component": "Splitter",
+        "import": "@baseline/layout"
+      },
+      "slot_map": {
+        "primary": {
+          "to": "primary",
+          "transform": "node_passthrough"
+        },
+        "secondary": {
+          "to": "secondary",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Panel",
+        "reason": "Splitter unavailable"
+      },
+      "fallback_chain": [
+        "Panel"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "layout.affix",
+      "target": {
+        "component": "Affix",
+        "import": "@baseline/layout"
+      },
+      "slot_map": {
+        "body": {
+          "to": "body",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "stuck": {
+          "target_state": "stuck"
+        }
+      },
+      "fallback": {
+        "component": "Panel",
+        "reason": "Affix unavailable"
+      },
+      "fallback_chain": [
+        "Panel"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "layout.border_beam",
+      "target": {
+        "component": "BorderBeam",
+        "import": "@baseline/layout"
+      },
+      "slot_map": {
+        "body": {
+          "to": "body",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "active": {
+          "target_state": "active"
+        }
+      },
+      "fallback": {
+        "component": "Panel",
+        "reason": "BorderBeam unavailable"
+      },
+      "fallback_chain": [
+        "Panel"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "navigation.anchor",
+      "target": {
+        "component": "Anchor",
+        "import": "@baseline/navigation"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "list_passthrough"
+        },
+        "active_item": {
+          "to": "active_item",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "NavItem",
+        "reason": "Anchor unavailable"
+      },
+      "fallback_chain": [
+        "NavItem"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "navigation.menu",
+      "target": {
+        "component": "Menu",
+        "import": "@baseline/navigation"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "list_passthrough"
+        },
+        "active_item": {
+          "to": "active_item",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "collapsed": {
+          "target_state": "collapsed"
+        }
+      },
+      "fallback": {
+        "component": "NavItem",
+        "reason": "Menu unavailable"
+      },
+      "fallback_chain": [
+        "NavItem"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "overlay.dropdown",
+      "target": {
+        "component": "Dropdown",
+        "import": "@baseline/overlay"
+      },
+      "slot_map": {
+        "trigger": {
+          "to": "trigger",
+          "transform": "node_passthrough"
+        },
+        "items": {
+          "to": "items",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "open": {
+          "target_state": "open"
+        },
+        "closed": {
+          "target_state": "closed"
+        }
+      },
+      "fallback": {
+        "component": "Popover",
+        "reason": "Dropdown unavailable"
+      },
+      "fallback_chain": [
+        "Popover"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "overlay.tour",
+      "target": {
+        "component": "Tour",
+        "import": "@baseline/overlay"
+      },
+      "slot_map": {
+        "steps": {
+          "to": "steps",
+          "transform": "list_passthrough"
+        },
+        "active_step": {
+          "to": "active_step",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "open": {
+          "target_state": "open"
+        },
+        "closed": {
+          "target_state": "closed"
+        }
+      },
+      "fallback": {
+        "component": "Popover",
+        "reason": "Tour unavailable"
+      },
+      "fallback_chain": [
+        "Popover"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "overlay.popconfirm",
+      "target": {
+        "component": "Popconfirm",
+        "import": "@baseline/overlay"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "message": {
+          "to": "message",
+          "transform": "direct"
+        },
+        "confirm_action": {
+          "to": "confirm_action",
+          "transform": "node_passthrough"
+        },
+        "cancel_action": {
+          "to": "cancel_action",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "open": {
+          "target_state": "open"
+        },
+        "closed": {
+          "target_state": "closed"
+        }
+      },
+      "fallback": {
+        "component": "Popover",
+        "reason": "Popconfirm unavailable"
+      },
+      "fallback_chain": [
+        "Popover"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.autocomplete",
+      "target": {
+        "component": "Autocomplete",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "direct"
+        },
+        "options": {
+          "to": "options",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "focused": {
+          "target_state": "focused"
+        },
+        "open": {
+          "target_state": "open"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "Autocomplete unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.cascader",
+      "target": {
+        "component": "Cascader",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "options": {
+          "to": "options",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "open": {
+          "target_state": "open"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "Cascader unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.color_picker",
+      "target": {
+        "component": "ColorPicker",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "open": {
+          "target_state": "open"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "ColorPicker unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.form",
+      "target": {
+        "component": "Form",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "fields": {
+          "to": "fields",
+          "transform": "node_passthrough"
+        },
+        "actions": {
+          "to": "actions",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "submitting": {
+          "target_state": "submitting"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "Form unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.number_input",
+      "target": {
+        "component": "NumberInput",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "meta_passthrough"
+        },
+        "helper_text": {
+          "to": "helper_text",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "focused": {
+          "target_state": "focused"
+        },
+        "error": {
+          "target_state": "error"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "NumberInput unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.mentions",
+      "target": {
+        "component": "Mentions",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "direct"
+        },
+        "suggestions": {
+          "to": "suggestions",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "focused": {
+          "target_state": "focused"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "Mentions unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.rate",
+      "target": {
+        "component": "Rate",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "Rate unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.slider",
+      "target": {
+        "component": "Slider",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "meta_passthrough"
+        },
+        "min": {
+          "to": "min",
+          "transform": "meta_passthrough"
+        },
+        "max": {
+          "to": "max",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "Slider unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.time_input",
+      "target": {
+        "component": "TimeInput",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "value": {
+          "to": "value",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "focused": {
+          "target_state": "focused"
+        },
+        "error": {
+          "target_state": "error"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "TimeInput unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.transfer",
+      "target": {
+        "component": "Transfer",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "source_items": {
+          "to": "source_items",
+          "transform": "list_passthrough"
+        },
+        "target_items": {
+          "to": "target_items",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "Transfer unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.tree_select",
+      "target": {
+        "component": "TreeSelect",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "options": {
+          "to": "options",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "open": {
+          "target_state": "open"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "TreeSelect unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "input.segmented_control",
+      "target": {
+        "component": "SegmentedControl",
+        "import": "@baseline/input"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "options": {
+          "to": "options",
+          "transform": "list_passthrough"
+        },
+        "value": {
+          "to": "value",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "disabled": {
+          "target_state": "disabled"
+        }
+      },
+      "fallback": {
+        "component": "Field",
+        "reason": "SegmentedControl unavailable"
+      },
+      "fallback_chain": [
+        "Field"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "data.avatar",
+      "target": {
+        "component": "Avatar",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        },
+        "image": {
+          "to": "image",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "fallback": {
+          "target_state": "fallback"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "Avatar unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "data.calendar",
+      "target": {
+        "component": "Calendar",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "events": {
+          "to": "events",
+          "transform": "list_passthrough"
+        },
+        "active_date": {
+          "to": "active_date",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "empty": {
+          "target_state": "empty"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "Calendar unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "data.carousel",
+      "target": {
+        "component": "Carousel",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "Carousel unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "data.image",
+      "target": {
+        "component": "Image",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "src": {
+          "to": "src",
+          "transform": "node_passthrough"
+        },
+        "alt": {
+          "to": "alt",
+          "transform": "direct"
+        },
+        "caption": {
+          "to": "caption",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "loading": {
+          "target_state": "loading"
+        },
+        "error": {
+          "target_state": "error"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "Image unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "data.qr_code",
+      "target": {
+        "component": "QrCode",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "value": {
+          "to": "value",
+          "transform": "direct"
+        },
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "QrCode unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "data.icon",
+      "target": {
+        "component": "Icon",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "name": {
+          "to": "name",
+          "transform": "direct"
+        },
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "Icon unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "data.typography",
+      "target": {
+        "component": "Typography",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "text": {
+          "to": "text",
+          "transform": "direct"
+        },
+        "variant": {
+          "to": "variant",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "Typography unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "data.timeline",
+      "target": {
+        "component": "Timeline",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "empty": {
+          "target_state": "empty"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "Timeline unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "data.tree",
+      "target": {
+        "component": "Tree",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "nodes": {
+          "to": "nodes",
+          "transform": "list_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "empty": {
+          "target_state": "empty"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "Tree unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "data.collapse",
+      "target": {
+        "component": "Collapse",
+        "import": "@baseline/data"
+      },
+      "slot_map": {
+        "items": {
+          "to": "items",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        },
+        "collapsed": {
+          "target_state": "collapsed"
+        }
+      },
+      "fallback": {
+        "component": "Card",
+        "reason": "Collapse unavailable"
+      },
+      "fallback_chain": [
+        "Card"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "feedback.result",
+      "target": {
+        "component": "Result",
+        "import": "@baseline/feedback"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "message": {
+          "to": "message",
+          "transform": "direct"
+        },
+        "actions": {
+          "to": "actions",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "success": {
+          "target_state": "success"
+        },
+        "error": {
+          "target_state": "error"
+        },
+        "warning": {
+          "target_state": "warning"
+        },
+        "info": {
+          "target_state": "info"
+        }
+      },
+      "fallback": {
+        "component": "Alert",
+        "reason": "Result unavailable"
+      },
+      "fallback_chain": [
+        "Alert"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "feedback.skeleton",
+      "target": {
+        "component": "Skeleton",
+        "import": "@baseline/feedback"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Alert",
+        "reason": "Skeleton unavailable"
+      },
+      "fallback_chain": [
+        "Alert"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "feedback.notification",
+      "target": {
+        "component": "Notification",
+        "import": "@baseline/feedback"
+      },
+      "slot_map": {
+        "title": {
+          "to": "title",
+          "transform": "direct"
+        },
+        "message": {
+          "to": "message",
+          "transform": "direct"
+        },
+        "actions": {
+          "to": "actions",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "info": {
+          "target_state": "info"
+        },
+        "success": {
+          "target_state": "success"
+        },
+        "warning": {
+          "target_state": "warning"
+        },
+        "error": {
+          "target_state": "error"
+        }
+      },
+      "fallback": {
+        "component": "Alert",
+        "reason": "Notification unavailable"
+      },
+      "fallback_chain": [
+        "Alert"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "feedback.message",
+      "target": {
+        "component": "Message",
+        "import": "@baseline/feedback"
+      },
+      "slot_map": {
+        "message": {
+          "to": "message",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "info": {
+          "target_state": "info"
+        },
+        "success": {
+          "target_state": "success"
+        },
+        "warning": {
+          "target_state": "warning"
+        },
+        "error": {
+          "target_state": "error"
+        }
+      },
+      "fallback": {
+        "component": "Alert",
+        "reason": "Message unavailable"
+      },
+      "fallback_chain": [
+        "Alert"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "feedback.watermark",
+      "target": {
+        "component": "Watermark",
+        "import": "@baseline/feedback"
+      },
+      "slot_map": {
+        "label": {
+          "to": "label",
+          "transform": "direct"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Alert",
+        "reason": "Watermark unavailable"
+      },
+      "fallback_chain": [
+        "Alert"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "flow.app_context",
+      "target": {
+        "component": "AppContext",
+        "import": "@baseline/flow"
+      },
+      "slot_map": {
+        "body": {
+          "to": "body",
+          "transform": "node_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Stepper",
+        "reason": "AppContext unavailable"
+      },
+      "fallback_chain": [
+        "Stepper"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "flow.config_provider",
+      "target": {
+        "component": "ConfigProvider",
+        "import": "@baseline/flow"
+      },
+      "slot_map": {
+        "body": {
+          "to": "body",
+          "transform": "node_passthrough"
+        },
+        "config": {
+          "to": "config",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Stepper",
+        "reason": "ConfigProvider unavailable"
+      },
+      "fallback_chain": [
+        "Stepper"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "source_semantic_id": "flow.utility",
+      "target": {
+        "component": "Utility",
+        "import": "@baseline/flow"
+      },
+      "slot_map": {
+        "body": {
+          "to": "body",
+          "transform": "node_passthrough"
+        },
+        "meta": {
+          "to": "meta",
+          "transform": "meta_passthrough"
+        }
+      },
+      "state_map": {
+        "default": {
+          "target_state": "default"
+        }
+      },
+      "fallback": {
+        "component": "Stepper",
+        "reason": "Utility unavailable"
+      },
+      "fallback_chain": [
+        "Stepper"
+      ],
+      "confidence": 0.8
     }
   ]
 }

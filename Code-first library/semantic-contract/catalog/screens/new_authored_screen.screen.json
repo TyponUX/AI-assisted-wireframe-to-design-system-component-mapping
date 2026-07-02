@@ -40,21 +40,87 @@
             "props": {},
             "children": [
               {
-                "instance_id": "template-dashboard-card1",
-                "semantic_id": "data.card",
+                "instance_id": "template-dashboard-metric1",
+                "semantic_id": "data.metric_tile",
                 "state": "default",
                 "props": {
-                  "title": "Revenue",
-                  "body": "$24,500"
+                  "label": "Open Tickets",
+                  "value": 42,
+                  "context": "Last 7 days",
+                  "trend": "+8%"
                 }
               },
               {
-                "instance_id": "template-dashboard-card2",
-                "semantic_id": "data.card",
+                "instance_id": "template-dashboard-metric2",
+                "semantic_id": "data.metric",
                 "state": "default",
                 "props": {
-                  "title": "Signups",
-                  "body": "1,284"
+                  "label": "SLA Breaches",
+                  "value": 5,
+                  "context": "This week",
+                  "trend": "-2"
+                }
+              },
+              {
+                "instance_id": "template-dashboard-metric3",
+                "semantic_id": "data.trend_indicator",
+                "state": "up",
+                "props": {
+                  "label": "Resolution Rate",
+                  "direction": "up",
+                  "value": "+6%"
+                }
+              }
+            ]
+          },
+          {
+            "instance_id": "template-dashboard-charts",
+            "semantic_id": "layout.inline",
+            "state": "wrap",
+            "props": {},
+            "children": [
+              {
+                "instance_id": "template-dashboard-bar",
+                "semantic_id": "data.chart_bar",
+                "state": "default",
+                "props": {
+                  "title": "Priority Distribution",
+                  "series": [
+                    {
+                      "label": "High",
+                      "value": 12
+                    },
+                    {
+                      "label": "Medium",
+                      "value": 24
+                    },
+                    {
+                      "label": "Low",
+                      "value": 18
+                    }
+                  ]
+                }
+              },
+              {
+                "instance_id": "template-dashboard-donut",
+                "semantic_id": "data.chart_donut",
+                "state": "default",
+                "props": {
+                  "title": "Priority Share",
+                  "series": [
+                    {
+                      "label": "High",
+                      "value": 20
+                    },
+                    {
+                      "label": "Medium",
+                      "value": 50
+                    },
+                    {
+                      "label": "Low",
+                      "value": 30
+                    }
+                  ]
                 }
               }
             ]
