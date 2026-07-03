@@ -62,6 +62,45 @@ type ColorTokenUsage = {
 
 type ColorTokenValues = Record<string, string>;
 
+type MappingStatus = "mapped" | "missing" | "needs_review";
+
+type ManualMappingDraft = {
+  manualClientComponentName: string;
+  manualImportPath: string;
+  status: MappingStatus;
+};
+
+function toTitleCase(value: string): string {
+  return value
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function deriveNameFromSemanticId(semanticId: string): string {
+  const leaf = semanticId.split(".").pop() || semanticId;
+
+  if (leaf.startsWith("button_")) {
+    const variant = leaf.replace("button_", "").replace(/_/g, " ").trim();
+    if (variant.length > 0) {
+      return `${toTitleCase(variant)} button`;
+    }
+  }
+
+  const normalized = leaf.replace(/_/g, " ").trim();
+  return toTitleCase(normalized);
+}
+
+function isFigmaNodeUrl(value: string): boolean {
+  try {
+    const parsed = new URL(value.trim());
+    return parsed.hostname.includes("figma.com") && parsed.searchParams.has("node-id");
+  } catch {
+    return false;
+  }
+}
+
 const typographyRoleOrder: TypographyRoleName[] = [
   "display",
   "heading_l",
@@ -113,7 +152,7 @@ function App() {
   const typedTypographyRoleMap = typographyRoleMap as TypographyRoleMap;
   const typedTypographyAllocationMatrix = typographyAllocationMatrix as TypographyAllocationMatrix;
   const contractBaseFontFamily = typedTypographyRoleMap.base_font_family?.trim() || "Inter, Avenir, Helvetica, Arial, sans-serif";
-  const [mode, setMode] = useState<"matrix" | "typography" | "typography_mapping">("matrix");
+  const [mode, setMode] = useState<"matrix" | "typography" | "typography_mapping" | "components_mapping_overview">("matrix");
   const [selectedFontFamily, setSelectedFontFamily] = useState<string>(() => {
     if (typeof window === "undefined") {
       return contractBaseFontFamily;
@@ -145,6 +184,7 @@ function App() {
   const [matrixFilter, setMatrixFilter] = useState<"default" | "all">("default");
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeSubcategory, setActiveSubcategory] = useState<string>("all");
+  const [manualMappingDrafts, setManualMappingDrafts] = useState<Record<string, ManualMappingDraft>>({});
   const errors = validateContracts(componentCatalog, starterFlow);
   const stateMatrix = useMemo(
     () =>
@@ -302,20 +342,64 @@ function App() {
     [typedTypographyRoleMap],
   );
 
-  const typographyMappingRows = useMemo(
+  const semanticManualMappingRows = useMemo(
     () =>
-      Object.entries(typedTypographyAllocationMatrix.allocations)
-        .map(([semanticId, allocation]) => ({
-          semanticId,
-          componentDefault: allocation.component_default,
-          titleRole: allocation.title_role,
-          slotsSummary: Object.entries(allocation.slots)
-            .map(([slot, role]) => `${slot}: ${role}`)
-            .join(", "),
+      [...componentCatalog]
+        .map((component) => ({
+          semanticId: component.semantic_id,
+          category: component.category,
+          subcategory: component.subcategory || "general",
         }))
         .sort((a, b) => a.semanticId.localeCompare(b.semanticId)),
-    [typedTypographyAllocationMatrix],
+    [],
   );
+
+  const manualMappingStatusSummary = useMemo(() => {
+    let mapped = 0;
+    let needsReview = 0;
+    let missing = 0;
+
+    for (const row of semanticManualMappingRows) {
+      const draft = getManualMappingDraft(row.semanticId);
+      if (draft.status === "mapped") {
+        mapped += 1;
+      } else if (draft.status === "needs_review") {
+        needsReview += 1;
+      } else {
+        missing += 1;
+      }
+    }
+
+    return { mapped, needsReview, missing };
+  }, [manualMappingDrafts, semanticManualMappingRows]);
+
+  function getManualMappingDraft(semanticId: string): ManualMappingDraft {
+    return (
+      manualMappingDrafts[semanticId] || {
+        manualClientComponentName: "",
+        manualImportPath: "",
+        status: "missing",
+      }
+    );
+  }
+
+  function updateManualMappingDraft(semanticId: string, patch: Partial<ManualMappingDraft>): void {
+    setManualMappingDrafts((previous) => {
+      const current =
+        previous[semanticId] || {
+          manualClientComponentName: "",
+          manualImportPath: "",
+          status: "missing",
+        };
+      return {
+        ...previous,
+        [semanticId]: {
+          ...current,
+          ...patch,
+        },
+      };
+    });
+  }
 
   const typographyRoleUsage = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -369,6 +453,13 @@ function App() {
           onClick={() => setMode("typography_mapping")}
         >
           Mapping
+        </button>
+        <button
+          type="button"
+          className={mode === "components_mapping_overview" ? "wf-toggle is-active" : "wf-toggle"}
+          onClick={() => setMode("components_mapping_overview")}
+        >
+          Components Mapping Overview
         </button>
       </section>
 
@@ -583,23 +674,105 @@ function App() {
               </div>
             </article>
 
-            <article className="wf-typography-row">
-              <header className="wf-typography-row-header">
-                <strong>Components Mapping Overview</strong>
-              </header>
-              <p className="wf-status-text">
-                Default component role: {typedTypographyAllocationMatrix.default_component_role}. Total mapped components: {typographyMappingRows.length}.
+          </div>
+        </section>
+      ) : mode === "components_mapping_overview" ? (
+        <section className="wf-canvas">
+          <div className="wf-typography-preview" aria-label="Components mapping overview">
+            <div className="wf-typography-header">
+              <h2 className="wf-section-title">Components Mapping Overview</h2>
+              <p>
+                Manual semantic-to-client mapping table. Client fields stay blank until you fill them per design system.
               </p>
-              <div className="wf-authoring-json">
-                {typographyMappingRows.map((row) => (
-                  <div key={row.semanticId}>
-                    <strong>{row.semanticId}</strong>
-                    <div>component_default: {row.componentDefault}</div>
-                    <div>title_role: {row.titleRole}</div>
-                    <div>slots: {row.slotsSummary || "n/a"}</div>
-                    <hr />
-                  </div>
-                ))}
+              <p className="wf-status-text">
+                Summary: {manualMappingStatusSummary.mapped} mapped, {manualMappingStatusSummary.needsReview} needs review, {manualMappingStatusSummary.missing} missing.
+              </p>
+            </div>
+            <article className="wf-typography-row">
+              <div className="wf-mapping-table-wrap">
+                <table className="wf-mapping-table" aria-label="Manual semantic to client mapping table">
+                  <thead>
+                    <tr>
+                      <th>Semantic ID</th>
+                      <th>Manual Client Component Name</th>
+                      <th>Manual Import Path</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {semanticManualMappingRows.map((row) => {
+                      const draft = getManualMappingDraft(row.semanticId);
+                      return (
+                        <tr key={row.semanticId}>
+                          <td>{row.semanticId}</td>
+                          <td>
+                            <input
+                              className="wf-input wf-mapping-input"
+                              value={draft.manualClientComponentName}
+                              onChange={(event) =>
+                                updateManualMappingDraft(row.semanticId, {
+                                  manualClientComponentName: event.target.value,
+                                })
+                              }
+                              placeholder="Client/Button/Primary"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              className="wf-input wf-mapping-input"
+                              value={draft.manualImportPath}
+                              onChange={(event) => {
+                                const nextValue = event.target.value;
+                                const nextPatch: Partial<ManualMappingDraft> = {
+                                  manualImportPath: nextValue,
+                                };
+
+                                if (isFigmaNodeUrl(nextValue)) {
+                                  nextPatch.manualClientComponentName = deriveNameFromSemanticId(row.semanticId);
+                                  if (draft.status === "missing") {
+                                    nextPatch.status = "needs_review";
+                                  }
+                                }
+
+                                updateManualMappingDraft(row.semanticId, nextPatch);
+                              }}
+                              placeholder="@client/ui/button"
+                            />
+                          </td>
+                          <td>
+                            <div className="wf-status-dots" role="group" aria-label={`Set status for ${row.semanticId}`}>
+                              <button
+                                type="button"
+                                className={draft.status === "mapped" ? "wf-status-dot is-active is-mapped" : "wf-status-dot is-mapped"}
+                                onClick={() => updateManualMappingDraft(row.semanticId, { status: "mapped" })}
+                                title="Mapped"
+                                aria-label="Mapped"
+                              />
+                              <button
+                                type="button"
+                                className={
+                                  draft.status === "needs_review"
+                                    ? "wf-status-dot is-active is-needs-review"
+                                    : "wf-status-dot is-needs-review"
+                                }
+                                onClick={() => updateManualMappingDraft(row.semanticId, { status: "needs_review" })}
+                                title="Needs review"
+                                aria-label="Needs review"
+                              />
+                              <button
+                                type="button"
+                                className={draft.status === "missing" ? "wf-status-dot is-active is-missing" : "wf-status-dot is-missing"}
+                                onClick={() => updateManualMappingDraft(row.semanticId, { status: "missing" })}
+                                title="Missing"
+                                aria-label="Missing"
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </article>
           </div>
