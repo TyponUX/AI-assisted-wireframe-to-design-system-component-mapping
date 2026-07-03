@@ -5,12 +5,11 @@
   "type": "module",
   "scripts": {
     "typography:sync": "node scripts/sync-typography-tokens.mjs",
-    "dev": "npm run -s typography:sync && vite",
+    "dev-semantic-library-viewer": "npm run -s typography:sync && vite",
     "build": "npm run -s typography:sync && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "npm run -s typography:sync && vite preview",
-    "test:contract": "node scripts/contract-check.mjs",
-    "workflow:save": "node scripts/save-authored-screen.mjs"
+    "test:contract": "node scripts/contract-check.mjs"
   },
   "dependencies": {
     "ajv": "^8.20.0",

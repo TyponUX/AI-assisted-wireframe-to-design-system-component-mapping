@@ -5,33 +5,9 @@ import { NodeRenderer } from "./semantic/renderer";
 import { validateContracts } from "./semantic/validate";
 import { componentCatalog } from "./semantic/contract";
 import { buildSampleNode, buildSampleNodeForState } from "./semantic/samples";
-import { buildScreenFromTemplate, pageTemplates } from "./semantic/templates";
 import rendererStateCoverage from "./semantic/renderer-state-coverage.json";
 import typographyRoleMap from "../../semantic-contract/catalog/typography-role-map.json";
 import typographyAllocationMatrix from "../../semantic-contract/catalog/typography-allocation.matrix.json";
-import baselineAdapter from "../../mapping/client-adapter.baseline.json";
-import enterpriseAdapter from "../../mapping/client-adapter.enterprise.json";
-import type { SemanticNode } from "./semantic/types";
-
-type AdapterContractRule = {
-  source_semantic_id: string;
-  target: { component: string; import: string };
-  state_map: Record<string, { target_state?: string } | undefined>;
-  fallback_chain?: string[];
-  confidence?: number;
-};
-
-type AdapterContractFile = {
-  client_id: string;
-  design_system: string;
-  version: string;
-  rules: AdapterContractRule[];
-};
-
-const adapterRegistry: AdapterContractFile[] = [
-  baselineAdapter as AdapterContractFile,
-  enterpriseAdapter as AdapterContractFile,
-];
 
 type TypographyRoleName =
   | "display"
@@ -133,27 +109,11 @@ const defaultColorTokenValues: ColorTokenValues = Object.fromEntries(
   colorTokenUsageMap.map((entry) => [entry.token, entry.hex]),
 ) as ColorTokenValues;
 
-function walkNodes(node: SemanticNode, visit: (node: SemanticNode) => void): void {
-  visit(node);
-  if (Array.isArray(node.children)) {
-    node.children.forEach((child) => walkNodes(child, visit));
-  }
-}
-
-function toScreenId(value: string): string {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "")
-    .slice(0, 60) || "authored_screen";
-}
-
 function App() {
   const typedTypographyRoleMap = typographyRoleMap as TypographyRoleMap;
   const typedTypographyAllocationMatrix = typographyAllocationMatrix as TypographyAllocationMatrix;
   const contractBaseFontFamily = typedTypographyRoleMap.base_font_family?.trim() || "Inter, Avenir, Helvetica, Arial, sans-serif";
-  const [mode, setMode] = useState<"flow" | "matrix" | "authoring" | "typography" | "typography_mapping">("matrix");
+  const [mode, setMode] = useState<"matrix" | "typography" | "typography_mapping">("matrix");
   const [selectedFontFamily, setSelectedFontFamily] = useState<string>(() => {
     if (typeof window === "undefined") {
       return contractBaseFontFamily;
@@ -185,126 +145,7 @@ function App() {
   const [matrixFilter, setMatrixFilter] = useState<"default" | "all">("default");
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeSubcategory, setActiveSubcategory] = useState<string>("all");
-  const [selectedTemplateId, setSelectedTemplateId] = useState<string>(pageTemplates[0]?.id || "");
-  const [authoredScreenName, setAuthoredScreenName] = useState<string>("New Authored Screen");
-  const [intentAnnotation, setIntentAnnotation] = useState<string>("rapid_prototype");
-  const [stateAnnotation, setStateAnnotation] = useState<string>("draft");
-  const [selectedAdapterId, setSelectedAdapterId] = useState<string>(adapterRegistry[0]?.client_id || "");
-  const [exportNotice, setExportNotice] = useState<string>("");
   const errors = validateContracts(componentCatalog, starterFlow);
-  const selectedTemplate = useMemo(
-    () => pageTemplates.find((template) => template.id === selectedTemplateId) || pageTemplates[0]!,
-    [selectedTemplateId],
-  );
-  const authoredScreen = useMemo(
-    () =>
-      buildScreenFromTemplate(
-        selectedTemplate,
-        toScreenId(authoredScreenName),
-        authoredScreenName,
-        intentAnnotation,
-        stateAnnotation,
-      ),
-    [authoredScreenName, intentAnnotation, selectedTemplate, stateAnnotation],
-  );
-  const authoredScreenValidationErrors = useMemo(
-    () => validateContracts(componentCatalog, authoredScreen),
-    [authoredScreen],
-  );
-  const selectedAdapter = useMemo(
-    () => adapterRegistry.find((adapter) => adapter.client_id === selectedAdapterId) || adapterRegistry[0]!,
-    [selectedAdapterId],
-  );
-  const authoredScreenNodes = useMemo(() => {
-    const nodes: SemanticNode[] = [];
-    walkNodes(authoredScreen.root, (node) => nodes.push(node));
-    return nodes;
-  }, [authoredScreen]);
-  const adapterCoverage = useMemo(() => {
-    const rulesBySemanticId = new Map(selectedAdapter.rules.map((rule) => [rule.source_semantic_id, rule]));
-    const mappedNodeRows: Array<{
-      instance_id: string;
-      semantic_id: string;
-      state: string;
-      target_component: string;
-      target_import: string;
-      target_state: string;
-      fallback_chain: string;
-      confidence: string;
-    }> = [];
-    const missingNodeMappings: Array<{ instance_id: string; semantic_id: string }> = [];
-    const missingStateMappings: Array<{ instance_id: string; semantic_id: string; state: string }> = [];
-
-    for (const node of authoredScreenNodes) {
-      const rule = rulesBySemanticId.get(node.semantic_id);
-      if (!rule) {
-        missingNodeMappings.push({
-          instance_id: node.instance_id,
-          semantic_id: node.semantic_id,
-        });
-        continue;
-      }
-
-      const stateMapping = rule.state_map?.[node.state];
-      if (!stateMapping?.target_state) {
-        missingStateMappings.push({
-          instance_id: node.instance_id,
-          semantic_id: node.semantic_id,
-          state: node.state,
-        });
-        continue;
-      }
-
-      mappedNodeRows.push({
-        instance_id: node.instance_id,
-        semantic_id: node.semantic_id,
-        state: node.state,
-        target_component: rule.target.component,
-        target_import: rule.target.import,
-        target_state: stateMapping.target_state,
-        fallback_chain: Array.isArray(rule.fallback_chain) && rule.fallback_chain.length > 0 ? rule.fallback_chain.join(" -> ") : "n/a",
-        confidence: typeof rule.confidence === "number" ? `${Math.round(rule.confidence * 100)}%` : "n/a",
-      });
-    }
-
-    const catalogUnmapped = componentCatalog
-      .filter((component) => !rulesBySemanticId.has(component.semantic_id))
-      .map((component) => component.semantic_id);
-
-    const catalogStateGaps = componentCatalog.flatMap((component) => {
-      const rule = rulesBySemanticId.get(component.semantic_id);
-      if (!rule) {
-        return [];
-      }
-
-      return component.states
-        .filter((state) => !rule.state_map?.[state]?.target_state)
-        .map((state) => `${component.semantic_id}.${state}`);
-    });
-
-    return {
-      mappedNodeRows,
-      missingNodeMappings,
-      missingStateMappings,
-      catalogUnmapped,
-      catalogStateGaps,
-    };
-  }, [authoredScreenNodes, selectedAdapter]);
-  const authoredScreenJson = useMemo(() => JSON.stringify(authoredScreen, null, 2), [authoredScreen]);
-  const authoredScreenFileName = `${authoredScreen.screen_id}.screen.json`;
-
-  function handleExportAuthoredScreen(): void {
-    const blob = new Blob([authoredScreenJson], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = authoredScreenFileName;
-    anchor.click();
-    URL.revokeObjectURL(url);
-    setExportNotice(
-      `Downloaded ${authoredScreenFileName}. Run: npm run workflow:save -- --from ~/Downloads/${authoredScreenFileName}`,
-    );
-  }
   const stateMatrix = useMemo(
     () =>
       componentCatalog.map((component) => ({
@@ -529,20 +370,6 @@ function App() {
         >
           Mapping
         </button>
-        <button
-          type="button"
-          className={mode === "flow" ? "wf-toggle is-active" : "wf-toggle"}
-          onClick={() => setMode("flow")}
-        >
-          Flow Preview
-        </button>
-        <button
-          type="button"
-          className={mode === "authoring" ? "wf-toggle is-active" : "wf-toggle"}
-          onClick={() => setMode("authoring")}
-        >
-          Workflow Composer
-        </button>
       </section>
 
       <section className="wf-global-controls" aria-label="Global style controls">
@@ -659,13 +486,6 @@ function App() {
               <li key={error}>{error}</li>
             ))}
           </ul>
-        </section>
-      ) : mode === "flow" ? (
-        <section className="wf-canvas">
-          <h2 className="wf-section-title">Flow: onboarding.account_setup</h2>
-          <div className="wf-semantic-scope" style={semanticColorStyle}>
-            <NodeRenderer node={starterFlow.root} />
-          </div>
         </section>
       ) : mode === "typography" ? (
         <section className="wf-canvas">
@@ -784,7 +604,7 @@ function App() {
             </article>
           </div>
         </section>
-      ) : mode === "matrix" ? (
+      ) : (
         <section className="wf-canvas">
           <div className="wf-matrix-toolbar">
             <h2 className="wf-section-title">Components</h2>
@@ -889,165 +709,6 @@ function App() {
                   ))}
                 </section>
               ))}
-            </div>
-          </div>
-        </section>
-      ) : (
-        <section className="wf-canvas">
-          <h2 className="wf-section-title">Workflow Composer</h2>
-          <div className="wf-authoring-layout">
-            <aside className="wf-authoring-panel">
-              <h3>Template Registry</h3>
-              <div className="wf-authoring-template-list">
-                {pageTemplates.map((template) => (
-                  <button
-                    key={template.id}
-                    type="button"
-                    className={selectedTemplate.id === template.id ? "wf-template-button is-active" : "wf-template-button"}
-                    onClick={() => setSelectedTemplateId(template.id)}
-                  >
-                    <strong>{template.name}</strong>
-                    <span>{template.description}</span>
-                  </button>
-                ))}
-              </div>
-              <h3>Workflow Composition</h3>
-              <label className="wf-field">
-                <span>Screen Name</span>
-                <input
-                  className="wf-input"
-                  value={authoredScreenName}
-                  onChange={(event) => setAuthoredScreenName(event.target.value)}
-                />
-              </label>
-              <label className="wf-field">
-                <span>Intent Annotation</span>
-                <input
-                  className="wf-input"
-                  value={intentAnnotation}
-                  onChange={(event) => setIntentAnnotation(event.target.value)}
-                />
-              </label>
-              <label className="wf-field">
-                <span>State Annotation</span>
-                <input
-                  className="wf-input"
-                  value={stateAnnotation}
-                  onChange={(event) => setStateAnnotation(event.target.value)}
-                />
-              </label>
-              <label className="wf-field">
-                <span>Target Adapter</span>
-                <select
-                  className="wf-input"
-                  value={selectedAdapter.client_id}
-                  onChange={(event) => setSelectedAdapterId(event.target.value)}
-                >
-                  {adapterRegistry.map((adapter) => (
-                    <option key={adapter.client_id} value={adapter.client_id}>
-                      {adapter.design_system} ({adapter.client_id})
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <div className="wf-authoring-meta">
-                <strong>Generated screen_id:</strong> {authoredScreen.screen_id}
-              </div>
-              <div className="wf-authoring-meta">
-                <strong>Mapped workflow nodes:</strong> {adapterCoverage.mappedNodeRows.length}/{authoredScreenNodes.length}
-                <br />
-                <strong>Unmapped workflow nodes:</strong> {adapterCoverage.missingNodeMappings.length}
-                <br />
-                <strong>State mapping gaps:</strong> {adapterCoverage.missingStateMappings.length}
-                <br />
-                <strong>Catalog unmapped semantics:</strong> {adapterCoverage.catalogUnmapped.length}
-                <br />
-                <strong>Catalog state gaps:</strong> {adapterCoverage.catalogStateGaps.length}
-              </div>
-              <div className="wf-authoring-actions">
-                <button type="button" className="wf-button wf-button-primary" onClick={handleExportAuthoredScreen}>
-                  Export JSON
-                </button>
-                <p className="wf-authoring-help">
-                  Save into semantic catalog: <code>npm run workflow:save -- --from ~/Downloads/{authoredScreenFileName}</code>
-                </p>
-                {exportNotice ? <p className="wf-authoring-notice">{exportNotice}</p> : null}
-              </div>
-              {adapterCoverage.missingNodeMappings.length > 0 ? (
-                <div className="wf-authoring-errors">
-                  <strong>Unmapped workflow semantic nodes</strong>
-                  <ul>
-                    {adapterCoverage.missingNodeMappings.map((entry) => (
-                      <li key={`${entry.instance_id}-${entry.semantic_id}`}>
-                        {entry.instance_id}: {entry.semantic_id}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-              {adapterCoverage.missingStateMappings.length > 0 ? (
-                <div className="wf-authoring-errors">
-                  <strong>Workflow state mapping gaps</strong>
-                  <ul>
-                    {adapterCoverage.missingStateMappings.map((entry) => (
-                      <li key={`${entry.instance_id}-${entry.semantic_id}-${entry.state}`}>
-                        {entry.instance_id}: {entry.semantic_id}.{entry.state}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-              {adapterCoverage.catalogUnmapped.length > 0 ? (
-                <div className="wf-authoring-errors">
-                  <strong>Catalog semantics missing in adapter</strong>
-                  <ul>
-                    {adapterCoverage.catalogUnmapped.slice(0, 8).map((semanticId) => (
-                      <li key={semanticId}>{semanticId}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-              {authoredScreenValidationErrors.length > 0 ? (
-                <div className="wf-authoring-errors">
-                  <strong>Validation</strong>
-                  <ul>
-                    {authoredScreenValidationErrors.map((error) => (
-                      <li key={error}>{error}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                <div className="wf-authoring-ok">Template output is valid.</div>
-              )}
-            </aside>
-            <div className="wf-authoring-preview">
-              <article>
-                <h3>Live Screen Preview</h3>
-                <div className="wf-semantic-scope" style={semanticColorStyle}>
-                  <NodeRenderer node={authoredScreen.root} />
-                </div>
-              </article>
-              <article>
-                <h3>Serialized Screen JSON</h3>
-                <pre className="wf-authoring-json">{authoredScreenJson}</pre>
-              </article>
-              <article>
-                <h3>Adapter Mapping Preview ({selectedAdapter.design_system})</h3>
-                <pre className="wf-authoring-json">
-                  {JSON.stringify(
-                    adapterCoverage.mappedNodeRows.map((row) => ({
-                      instance_id: row.instance_id,
-                      semantic: `${row.semantic_id}.${row.state}`,
-                      maps_to: `${row.target_component}.${row.target_state}`,
-                      import: row.target_import,
-                      fallback_chain: row.fallback_chain,
-                      confidence: row.confidence,
-                    })),
-                    null,
-                    2,
-                  )}
-                </pre>
-              </article>
             </div>
           </div>
         </section>
